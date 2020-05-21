@@ -1,6 +1,6 @@
 *****************************************************************************************************************;
 *                                                                                                               *;
-*; %let pgm=cst_150;  * Run this if #CONTINUE# was last line in module cst_100                                  *;
+*; %let pgm=cst_150;  * Run this if #CONTINUE# was last line in module cst_100  log                                *;
 *                                                                                                               *;
 *  OPSYS  WIN 10 64bit SAS 9.4M6(64bit)  (This code will not run in lockdown)                                   *;
 *                                                                                                               *;
