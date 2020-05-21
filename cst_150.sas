@@ -1,6 +1,6 @@
 *****************************************************************************************************************;
 *                                                                                                               *;
-*; %let pgm=cst_150;  * Run this if #CONTINUE# was last line in module cst_100  log                                *;
+*; %let pgm=cst_150;  * Run this if #CONTINUE# was last line in module cst_100                                  *;
 *                                                                                                               *;
 *  OPSYS  WIN 10 64bit SAS 9.4M6(64bit)  (This code will not run in lockdown)                                   *;
 *                                                                                                               *;
@@ -19,7 +19,7 @@
 *;libname cst "&_r:/cst"; /* Where the schema tables and intermediary tables is stored */                       *;
 *;libname  cstfmt "&_r:/cst/fmt";                                                                               *;
 *                                                                                                               *;
-*; Options (fmtsearch=work.formats cst.cst_fmtV1A sasautos="&_r:/oto");                                         *;
+*; options fmtsearch=(work.formats cst.cst_fmtv1a) sasautos="&_r:/oto" ;                                        *;
 *                                                                                                               *;
 *                                                                                                               *;
 * INTERNAL MACROS                                                                                               *;
@@ -54,8 +54,6 @@
 *  Created d:/cst/csv/snf10_2019_alpha.csv                                                                      *;
 *  Created d:/cst/csv/snf10_2019_nmrc.csv                                                                       *;
 *  Created d:/cst/csv/snf10_2019_rpt.csv                                                                        *;
-*                                                                                                               *;
-*  ##CONTINUE##  ==> Important                                                                                  *;
 *                                                                                                               *;
 *  ----------------------------------------------                                                               *;
 *                                                                                                               *;
