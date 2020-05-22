@@ -4,7 +4,7 @@
 *                                                                                                               *;
 *  OPSYS  WIN 10 64bit SAS 9.4M6(64bit)  (This code will not run in lockdown)                                   *;
 *                                                                                                               *;
-*  %let purpose=Sum columns 1 thru 4 in worksheet G0;                                                           *;
+*; %let purpose=Sum columns 1 thru 4 in worksheet G0;                                                          ;*;
 *                                                                                                               *;
 *  Github repository (sample input, output and code is at)                                                      *;
 *                                                                                                               *;
@@ -29,8 +29,6 @@
 *                                                                                                               *;
 * EXTERNAL MACROS IN AUTOCALL LIBRARY                                                                           *;
 * ====================================                                                                          *;
-*                                                                                                               *;
-*                                                                                                               *;
 *                                                                                                               *;
 *  INPUTS (works for all cost reports here is input for SNF)                                                    *;
 *  =========================================================                                                    *;
@@ -79,11 +77,11 @@
 *                                                                                                               *;
 *  1. Skinny fact table with addded column 5 in G0 worksheet                                                    *;
 *                                                                                                               *;
-*      &_r:\cst\CST_200Fiv20112019.sas7bdat                                                                     *;
+*      &_r:\cst\CST_200SnfFiv20112019.sas7bdat                                                                  *;
 *                                                                                                               *;
 *  2. One record with the max value for every cell for all Years of SNF                                         *;
 *                                                                                                               *;
-*      &_r:\cst\CST_200Max20112019.sas7bdat                                                                     *;
+*      &_r:\cst\CST_200SnfMax20112019.sas7bdat                                                                  *;
 *                                                                                                               *;
 *  3. If code ran sucessfully create sas table                                                                  *;
 *                                                                                                               *;
@@ -97,10 +95,8 @@
 *  1. Roger Deangelis              19JMAY2019   Creation                                                        *;
 *     rogerjdeangelis@gamil.com                                                                                 *;
 *                                                                                                               *;
-*  2. O record for every cell in   19JMAY2019   Creation                                                        *;
-*     rogerjdeangelis@gamil.com                                                                                 *;
-*                                                                                                               *;
 *****************************************************************************************************************;
+
 
 %symdel typ yrs outfiv outmax inp;
 
@@ -213,17 +209,6 @@ options obs=max;
     ,outfiv = cst_200&typ.fiv
     ,outmax = cst_200&typ.max
    );
-
-
-
-
-
-
-
-
-
-
-
 
 
 
