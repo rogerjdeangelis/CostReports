@@ -4,8 +4,11 @@ Builds a Cost Report Table Schema that for Detailed Analysis
     
     Sample output 2019 Skilled Nursing Facility 
     https://github.com/rogerjdeangelis/CostReports/blob/master/cst_250all.xlsx
-                                                                                                                                        
-    This driver code is aided by the open code '%if'                                                                                         
+                                                                                     
+    Rough design of Cost report schema
+    https://github.com/rogerjdeangelis/CostReports/blob/master/cst_design.pdf
+    
+    This driver code below is aided by the open code '%if'                                                                                        
                                                                                                                                         
     This code supoorts self locating files and self sourced files                                                                       
                                                                                                                                         
