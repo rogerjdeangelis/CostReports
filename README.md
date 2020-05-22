@@ -2,7 +2,7 @@
 Builds a Cost Report Table Schema that for Detailed Analysis
     Untested code. Every thing is under development;                                                                                    
                                                                                                                                         
-    This driver code is aided by the open code                                                                                          
+    This driver code is aided by the open code '%if'                                                                                         
                                                                                                                                         
     This code supoorts self locating files and self sourced files                                                                       
                                                                                                                                         
@@ -10,7 +10,7 @@ Builds a Cost Report Table Schema that for Detailed Analysis
                                                                                                                                         
       cst_025snfrug.xlsx                                                                                                                
                                                                                                                                         
-      Is located at           ./cst/xls/cst_025snfrug.xlsx                                                                              
+      Is located at           ./cst/xls/cst_025snfrug.xlsx  (atem is cst subfolder is xkx)                                                                            
       Was created by program  ./cst_025snfrug.sas                                                                                       
                                                                                                                                         
     This repo is under deveopment. None of the code has been run (in its present form)                                                  
