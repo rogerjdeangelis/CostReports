@@ -1,6 +1,9 @@
 # CostReports
 Builds a Cost Report Table Schema that for Detailed Analysis
-    Untested code. Every thing is under development;                                                                                    
+    Untested code. Every thing is under development;  
+    
+    Sample output 2019 Skilled Nursing Facility 
+    https://github.com/rogerjdeangelis/CostReports/blob/master/cst_250all.xlsx
                                                                                                                                         
     This driver code is aided by the open code '%if'                                                                                         
                                                                                                                                         
