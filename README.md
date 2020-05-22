@@ -10,7 +10,7 @@ Builds a Cost Report Table Schema that for Detailed Analysis
                                                                                                                                         
       cst_025snfrug.xlsx                                                                                                                
                                                                                                                                         
-      Is located at           ./cst/xls/cst_025snfrug.xlsx  (atem is cst subfolder is xkx)                                                                            
+      Is located at           ./cst/xls/cst_025snfrug.xlsx  (stem is cst subfolder is xlsx ./cst/xls/cst_025snfrug.xlsx)                                                                            
       Was created by program  ./cst_025snfrug.sas                                                                                       
                                                                                                                                         
     This repo is under deveopment. None of the code has been run (in its present form)                                                  
