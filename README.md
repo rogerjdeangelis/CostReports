@@ -10,9 +10,10 @@ Builds a Cost Report Table Schema that for Detailed Analysis
                                                                                                                    
       cst_025snfrug.xlsx                                                                                           
                                                                                                                    
-      Is located at           ./cst/xls/cst_025snfrug.xlsx                                                         
-      Was created by program  ./cst_025snfrug.sas                                                                  
-                                                                                                                   
+      Is located at           ./cst/xls/cst_025snfrug.xlsx  * combine cst with xls to get location ./cst/xls                                                      
+      Was created by program  ./cst_025snfrug.sas   
+      
+      Note - when database is frozen I rename the stem drom ./cst to ./cst_costReportPriject                                                                                                             
     This repo is under deveopment. None of the code has been run (in its present form)                             
                                                                                                                    
     *          _                        _    _                   _                                                 
