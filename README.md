@@ -50,8 +50,17 @@ Builds a Cost Report Table Schema that for Detailed Analysis
                                                                                                                                         
     G0        BALANCE SHEET                                                                                                             
     G2        STATEMENT OF PATIENT REVENUES AND OPERATING EXPENSES                                                                      
-    G3        STATEMENT OF REVENUES AND EXPENSES                                                                                        
-                                                                                                                                        
+    G3        STATEMENT OF REVENUES AND EXPENSES  
+    
+    A key table
+    https://github.com/rogerjdeangelis/CostReports/blob/master/cst_025snfdescribe.sas7bdat
+    
+    Contains detail descriptions for every cell in almost all worksheets. Just two columns
+    
+    cel_name                 cel_Description (fake data "@" is string split character)
+    wks     line  column     Column description                    Row      Reoeat cell_name
+    A000000_06000_00200_N    OUTPATIENT SERVICE COST CENTER Clinic@Salaries@A000000_06000_00200_N
+                                                                                                                                    
     *          _                        _    _                   _                                                                      
       _____  _| |_ ___ _ __ _ __   __ _| |  (_)_ __  _ __  _   _| |_ ___                                                                
      / _ \ \/ / __/ _ \ '__| '_ \ / _` | |  | | '_ \| '_ \| | | | __/ __|                                                               
