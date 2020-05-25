@@ -2,6 +2,16 @@
 Builds a Cost Report Table Schema that for Detailed Analysis
     Untested code. Every thing is under development;  
     
+    Now in the process of converting the development system to production system
+    
+    Development folder
+    
+        ./dev/cst
+        
+    Production folder
+    
+        ./prd/cst
+    
     Sample DRAFT output 2019 Skilled Nursing Facility 2011 to 2019 in one excel sheet 1,220 columns
     File is too large for gihub so here is the dropbox link (whole process takes less than 30 mins?
     
@@ -39,7 +49,7 @@ Builds a Cost Report Table Schema that for Detailed Analysis
                                                                                                                                         
     S41       SNF-BASED HOME HEALTH AGENCY                                                                                              
                                                                                                                                         
-    O01       ANALYSIS OF HOSPITAL-BASED HOSPICE COSTS                                                                                  
+    O01       ANALYSIS OF HOSPITAL-BASED HOSPICE COSTS  (decided not to put in filal excel PUF)                                                                                
                                                                                                                                         
     S7        PROSPECTIVE PAYMENT FOR SNF STATISTICAL DATA                                                                              
     A0        RECLASSIFICATION AND ADJUSTMENT OF TRIAL BALANCE OF EXPENSES                                                              
