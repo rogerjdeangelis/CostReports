@@ -73,11 +73,17 @@ Builds a Cost Report Table Schema that for Detailed Analysis
     cel_name                 cel_Description (fake data "@" is string split character)
     wks     line  column     Column description                    Row      Reoeat cell_name
     A000000_06000_00200_N    OUTPATIENT SERVICE COST CENTER Clinic@Salaries@A000000_06000_00200_N
-                                                                                                                                    
-      MOdule cst_00.sas is the SAS makefile                                                                                          
+                     _         __ _ _          
+     _ __ ___   __ _| | _____ / _(_) | ___     
+    | '_ ` _ \ / _` | |/ / _ \ |_| | |/ _ \    
+    | | | | | | (_| |   <  __/  _| | |  __/    
+    |_| |_| |_|\__,_|_|\_\___|_| |_|_|\___|    
+                                               
+                                                                                                                               
+      Module cst_000makefile.sas is the SAS makefile                                                                                          
       It 'compiles' all the modules needed to run the driver program.                                                                
       Users need to run this first and then they can run a short list                                                                
-      of mudules using the 'module' driver.                                                                                          
+      of modules using the 'module' driver.                                                                                          
       Users can also change and 'recompile' a module by editing the source                                                           
       located in the makefile. Highlight and submit highlighted code.                                                                
                                                                                                                                      
