@@ -15,7 +15,7 @@ Builds a Cost Report Table Schema that for Detailed Analysis
     Sample DRAFT output 2019 Skilled Nursing Facility 2011 to 2019 in one excel sheet 1,220 columns
     File is too large for gihub so here is the dropbox link (whole process takes less than 30 mins?
     
-    https://www.dropbox.com/s/78p1n46lmj1kxf5/cst_350snfxpo20112019.xlsx?dl=0  
+    https://www.dropbox.com/s/qzocabam8hp5i7p/cst_300snfcst_300snfpuf20112019.xlsb?dl=0
 
                                                                                      
     Rough DRAFT design of Cost report schema
