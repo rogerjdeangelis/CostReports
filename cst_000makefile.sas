@@ -1,12 +1,11 @@
 %let pgm=cst_000makefile;
 
 /*
-                     _         __ _ _
-     _ __ ___   __ _| | _____ / _(_) | ___
-    | '_ ` _ \ / _` | |/ / _ \ |_| | |/ _ \
-    | | | | | | (_| |   <  __/  _| | |  __/
-    |_| |_| |_|\__,_|_|\_\___|_| |_|_|\___|
-;
+                   _         __ _ _
+   _ __ ___   __ _| | _____ / _(_) | ___
+  | '_ ` _ \ / _` | |/ / _ \ |_| | |/ _ \
+  | | | | | | (_| |   <  __/  _| | |  __/
+  |_| |_| |_|\__,_|_|\_\___|_| |_|_|\___|
 
   MOdule cst_00.sas is the SAS makefile
   It 'compiles' all the modules needed to run the driver program.
@@ -34,7 +33,7 @@
                * export to excel
                * users may want to globally adjust cell width to very wide and change
                  the '@' symbol in the header to an 'alt-enter' (change '@' to 'cntl-shift-J(at same time).
-                 Fianlly do a global collapse cell widths to optimum widths
+                 Finally do a global collapse cell widths to optimum widths
            _                        _
   _____  _| |_ ___ _ __ _ __   __ _| |___
  / _ \ \/ / __/ _ \ '__| '_ \ / _` | / __|
@@ -71,7 +70,7 @@
 | / __/ __| | | |/ _ \/ __|
 | \__ \__ \ |_| |  __/\__ \
 |_|___/___/\__,_|\___||___/
-;
+
 
   1. If a cell has not been poulated in all cost reports post 2010 then
      it will not appear in the output excel puf. It will be
@@ -103,24 +102,29 @@
 
 %let gbl_tok   =  cst                 ;   * toten and part of root;
 %let gbl_typ   =  snf                 ;   * skilled nursing facilities;
-%let gbl_dir   =  1                   ;   * if 1 then build directory structure;
+%let gbl_dir   =  0                   ;   * if 1 then build directory structure;
+%let gbl_dirsub=  0                   ;   * if 1 then build sub directories;
+%let gbl_ext   =  0                   ;   * get externals;
 %let gbl_yrs   =  2011-2019           ;   * years to process;
 %let gbl_root  =  d                   ;   * where things are;
-%let gbl_oto   =  &gbl_root.:/cst/oto ;   * autocall library;
-%let gbl_sd1   =  &gbl_root.:/cst     ;   * schema for cost report tables;
+%let gbl_oto   =  &gbl_root:/cst/oto  ;   * autocall library;
+%let gbl_sd1   =  &gbl_root:/cst      ;   * schema for cost report tables;
+
+%put &=gbl_oto;
 
 * sas utilities;
 %let gbl_utlinp=  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_010.sas; /* utilities */
 %let gbl_utlout=  &gbl_root:/cst/oto/cst_010.sas; /* autocall folder */
 
-* cell description table;
-%let gbl_desinp=  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_025snfdescribe_sas7bdat.b64 /* col des */
-%let gbl_desout=  &gbl_root:/cst/cst_025describe.sas7bdat;
+%let gbl_desinp=  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_025snfdescribe_sas7bdat.b64; /* col des */
+%let gbl_desout=  &gbl_root:/cst/cst_025snfdescribe.sas7bdat;
 
-* gbl_exe is used with systask fro parallel processing may be needed for slower laptops not needed with my system;
+* gbl_exe is used with systask for parallel processin. May be needed for slower laptops not needed with my system;
 %let gbl_exe   =  %sysfunc(compbl(&_r\PROGRA~1\SASHome\SASFoundation\9.4\sas.exe -sysin nul -log nul -work &_r\wrk
                   -rsasuser -autoexec &_r\oto\tut_Oto.sas -nosplash -sasautos &_r\oto -RLANG -config &_r\cfg\sasv9.cfg));
 
+%put &gbl_tok;
+%put &gbl_sd1;
 *_       _ _
 (_)_ __ (_) |_
 | | '_ \| | __|
@@ -129,8 +133,9 @@
 
 ;
 
-* status switches these switches becore '1' if the corresponding module executed without error;
-* I choose to leave of '%if &cst_050=1 %then execute module cst_100 fornow'
+* status switches these switches are '1' if the corresponding module executed without error;
+* I choose to leave of '%if &cst_050=1 %then execute module cst_100 fornow;
+
 %let cst_050   =0;
 %let cst_100   =0;
 %let cst_150   =0;
@@ -139,6 +144,7 @@
 %let cst_150_3 =0;
 %let cst_150_3 =0;
 %let cst_150_4 =0;
+%let cst_200   =0;
 %let cst_250   =0;
 %let cst_300   =0;
 %let cst_350   =0;
@@ -155,6 +161,10 @@
   run;quit;
 
 %end /* create dir */;
+
+
+%if &gbl_dirsub %then %do;
+
 *         _       ___  ____   ___
   ___ ___| |_    / _ \| ___| / _ \
  / __/ __| __|  | | | |___ \| | | |
@@ -166,8 +176,8 @@ This copies the macro below to your autocall library.
 Create directory structure for costreports
 ;
 
-* you need to do this if you want to make changes after compilingthe  macro
-  and making change after the cards statement;
+* Note you can edit the code below and it will
+  de decompiled and copied to your autocall library;
 
 %utl_macrodelete(cst_050);
 
@@ -213,6 +223,11 @@ parmcards4;
 %mend cst_050;
 ;;;;
 run;quit;
+
+%cst_050(root=&gbl_root);
+
+%end;
+
 *                          _
  ___  __ _ ___  __ _ _   _| |_ ___  ___
 / __|/ _` / __|/ _` | | | | __/ _ \/ __|
@@ -223,42 +238,56 @@ run;quit;
 libname cst "&gbl_root:/cst";             * location of snowflake schema;
 options sasautos=(sasautos,"&gbl_oto");   * autocall library;
 
-*           _               _                        _
-  __ _  ___| |_    _____  _| |_ ___ _ __ _ __   __ _| |___
- / _` |/ _ \ __|  / _ \ \/ / __/ _ \ '__| '_ \ / _` | / __|
-| (_| |  __/ |_  |  __/>  <| ||  __/ |  | | | | (_| | \__ \
- \__, |\___|\__|  \___/_/\_\\__\___|_|  |_| |_|\__,_|_|___/
- |___/ _   _   _     _
- _   _| |_(_) (_) |_(_) ___  ___
-| | | | __| | | | __| |/ _ \/ __|
-| |_| | |_| | | | |_| |  __/\__ \
- \__,_|\__|_|_|_|\__|_|\___||___/
 
-;
-* download and compile utilities;
-%utl_submit_r64("
-activity_url <- '&gbl_utlinp';
-download.file(activity_url,'&gbl_utlout');
-");
+%if &gbl_ext %then %do;
 
-filename cin "&gbl_utlout" lrecl=4096 recfm=v;
-%inc cin / source;
-*                _        _     _
- ___  __ _ ___  | |_ __ _| |__ | | ___
-/ __|/ _` / __| | __/ _` | '_ \| |/ _ \
-\__ \ (_| \__ \ | || (_| | |_) | |  __/
-|___/\__,_|___/  \__\__,_|_.__/|_|\___|
-;
+    /*
+                _               _                        _
+      __ _  ___| |_    _____  _| |_ ___ _ __ _ __   __ _| |___
+     / _` |/ _ \ __|  / _ \ \/ / __/ _ \ '__| '_ \ / _` | / __|
+    | (_| |  __/ |_  |  __/>  <| ||  __/ |  | | | | (_| | \__ \
+     \__, |\___|\__|  \___/_/\_\\__\___|_|  |_| |_|\__,_|_|___/
+     |___/ _   _   _     _
+     _   _| |_(_) (_) |_(_) ___  ___
+    | | | | __| | | | __| |/ _ \/ __|
+    | |_| | |_| | | | |_| |  __/\__ \
+     \__,_|\__|_|_|_|\__|_|\___||___/
 
-%utl_submit_r64("
-activity_url <- 'https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_025snfdescribe_sas7bdat.b64';
-download.file(activity_url,'&gbl_dsout');
-");
+    */
 
-* Only run if you make a change to the sas table then ulload to github;
-%*utl_b64encode(d:/cst/cst_025snfdescribe.sas7bdat,d:/cst/b64/cst_025snfdescribe_sas7bdat.b64);
+    * if you dont have R do this manually;
 
-%utl_b64decode(d:/cst/tmp/cst_025snfdescribe.b64,&gbl_desout);
+    filename _bcot "&gbl_utlout";
+    proc http
+       method='get'
+       url="&gbl_utlinp"
+       out= _bcot;
+    run;quit;
+
+    filename cin "&gbl_utlout" lrecl=4096 recfm=v;
+    %inc cin / nosource;
+
+    /*               _        _     _
+     ___  __ _ ___  | |_ __ _| |__ | | ___
+    / __|/ _` / __| | __/ _` | '_ \| |/ _ \
+    \__ \ (_| \__ \ | || (_| | |_) | |  __/
+    |___/\__,_|___/  \__\__,_|_.__/|_|\___|
+    */
+
+    filename _bcot "d:/tmp/cst_025snfdescribe_sas7bdat.b64";
+    proc http
+       method='get'
+       url="&gbl_desinp"
+       out= _bcot;
+    run;quit;
+
+    * Only run if descrition table changes;
+    %*utl_b64encode(d:/cst/cst_025snfdescribe.sas7bdat,d:/cst/b64/cst_025snfdescribe_sas7bdat.b64);
+
+    %utl_b64decode(d:/tmp/cst_025snfdescribe_sas7bdat.b64,&gbl_desout);
+
+
+%end;
 
 *               _   _       _ _
   ___ _ __   __| | (_)_ __ (_) |_
@@ -379,14 +408,11 @@ parmcards4;
 run;quit;
 
 /*
-%if &cst_050=1 %then %do;
-
     %cst_100(
            cst=&gbl_typ
           ,root=&gbl_root
           ,year=&gbl_yrs
            );
-%end;
 
 %put &=cst_100;
 */
@@ -1163,13 +1189,14 @@ parmcards4;
 
        run;quit;
 
+       %if &syserr=0 %then %let cst_250=1;
+       %else %let cst_250=0;
+
        %let lap=%sysevalf(%sysfunc(time()) - &st);
        %put &=lap;
 
        %utlopts;
 
-     %if &syserr=0 %then %let cst_250=1;
-     %else %let cst_250=0;
 
     /*  Possible parallelization
 
@@ -1191,6 +1218,9 @@ options obs=max;
     ,coldes = cst_025&gbl_typ.describe  /* this is an external input */
     ,outsd1 = cst_250&gbl_typ.fac
    );
+   %put &=cst_250;
+
+   * 1 minute;
 */
 
 *         _       _____  ___   ___
@@ -1200,7 +1230,6 @@ options obs=max;
  \___|___/\__|___|____/ \___/ \___/
             |_____|
 ;
-
 
 %utl_macrodelete(cst_300);
 
@@ -1235,29 +1264,36 @@ parmcards4;
         %put &=outxls;
      */
 
-     %local S2 S3 G0 G2 G3 s7 s4 c0 C0 O0 A0 A7 E0 _yrsn ;
+    %local S2 S3 G0 G2 G3 s7 s4 c0 C0 O0 A0 A7 E0 _yrsn ;
 
-     %let yrscmp=%sysfunc(compress(&yrs,%str(-)));
-     %put &yrscmp;
+    %let yrscmp=%sysfunc(compress(&yrs,%str(-)));
+    %put &yrscmp;
 
-     %let inpSd1Fix=%sysfunc(compress(&inpsd1&yrscmp));
-     %put &=inpsd1fix;
+    %let inpSd1Fix=%sysfunc(compress(&inpsd1&yrscmp));
+    %put &=inpsd1fix;
 
-     %let outmaxFix=%sysfunc(compress(&outmax&yrscmp));
-     %put &=outmaxfix;
+    %let outmaxFix=%sysfunc(compress(&outmax&yrscmp));
+    %put &=outmaxfix;
 
-     %let outxpoFix=%sysfunc(compress(&outxpo&yrscmp));
-     %put &=outxpofix;
+    %let outxpoFix=%sysfunc(compress(&outxpo&yrscmp));
+    %put &=outxpofix;
 
-     %let outxlsfix=%sysfunc(compress(&outxls&yrscmp));
-     %put &=outxlsfix;
+    %let outxlsfix=%sysfunc(compress(&outxls&yrscmp));
+    %put &=outxlsfix;
+
+    proc datasets lib=cst nolist;
+       delete &outxpofix &outmaxfix ;
+    run;quit;
+
+    %utlfkil(&root:\cst\xls\cst_300&typ&outxlsfix..xlsx);
 
     %utlnopts;
-    %array(_yrs,values=&yrs);
+    %array(xyrs,values=&yrs);
 
     * chk array;
-    %put &=_yrsn;
-    %put &=_yrs1;
+    %put &=xyrsn;
+    %put &=xyrs1;
+    %utlopts;
 
     proc sort data=cst.&inpsd1fix out=cst_300srt noequals
         sortsize=80gb;
@@ -1390,6 +1426,9 @@ parmcards4;
 
     run;quit;
 
+    %if &syserr=0 %then %let cst_300=1;
+    %else %let cst_300=0;
+
     * 8 seconds;
 
    %utlnopts;
@@ -1399,11 +1438,17 @@ parmcards4;
        label dbms=xlsx
        replace;
    run;quit;
-   %utlopts;
+
+%mend cst_300;
 ;;;;
 run;quit;
 
 /*
+
+%symdel S2 S3 G0 G2 G3 s7 s4 c0 C0 O0 A0 A7 E0 xyrsn / nowarn;
+
+options obs=1000000;
+
 %cst_300(
      typ    = &gbl_typ
     ,yrs    = &gbl_yrs
@@ -1413,6 +1458,8 @@ run;quit;
     ,outmax = cst_300&gbl_typ.max
     ,outxls = cst_300&gbl_typ.puf
    );
+
+   %put &=cst_300;
 */
 
 *               _
