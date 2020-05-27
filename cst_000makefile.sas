@@ -286,6 +286,54 @@ options sasautos=(sasautos,"&gbl_oto");   * autocall library;
 
     %utl_b64decode(d:/tmp/cst_025snfdescribe_sas7bdat.b64,&gbl_desout);
 
+%put &cst;
+
+
+filename website url 'https://downloads.cms.gov/files/hcris/snf10fy2011.zip';
+filename copy "&gbl_root:/cst/zip/snf10fy2011.zip";
+  data _null_;
+    n=-1;
+    infile website recfm=s nbyte=n length=len;
+    file copy recfm=n;
+    input;
+    put _infile_ $varying32767. len;
+run;quit;
+
+
+
+
+filename copy clear;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 %end;
 
@@ -408,11 +456,11 @@ parmcards4;
 run;quit;
 
 /*
-    %cst_100(
-           cst=&gbl_typ
-          ,root=&gbl_root
-          ,year=&gbl_yrs
-           );
+%cst_100(
+       cst=&gbl_typ
+      ,root=&gbl_root
+      ,year=&gbl_yrs
+       );
 
 %put &=cst_100;
 */
@@ -1469,3 +1517,57 @@ options obs=1000000;
  \___|_| |_|\__,_|
 
 ;
+
+%let status=1;
+
+%if &status %then %do;
+
+  data class;
+     set sashelp.class;
+  run;quit;
+
+%end;
+
+4110  %let status=1;
+4111  %if &status %then %do;
+SYMBOLGEN:  Macro variable STATUS resolves to 1
+4112    data class;
+4113       set sashelp.class;
+4114    run;
+
+NOTE: There were 19 observations read from the data set SASHELP.CLASS.
+NOTE: The data set WORK.CLASS has 19 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.06 seconds
+      user cpu time       0.01 seconds
+      system cpu time     0.00 seconds
+      memory              557.31k
+      OS Memory           24560.00k
+      Timestamp           05/27/2020 04:11:50 PM
+      Step Count                        50  Switch Count  0
+
+
+4114!       quit;
+4115  %end;
+
+%let status=0;
+
+%if &status %then %do;
+
+  data class;
+     set sashelp.class;
+  run;quit;
+
+%end;
+%else %put "Failed";
+
+4122  %let status=0;
+4123  %if &status %then %do;
+SYMBOLGEN:  Macro variable STATUS resolves to 0
+4124    data class;
+4125       set sashelp.class;
+4126    run;quit;
+4127  %end;
+4128  %else %put "Failed";
+
+"Failed"
