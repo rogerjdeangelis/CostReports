@@ -1,6 +1,13 @@
 %let pgm=cst_000makefile;
 
 /*
+                     _         __ _ _
+     _ __ ___   __ _| | _____ / _(_) | ___
+    | '_ ` _ \ / _` | |/ / _ \ |_| | |/ _ \
+    | | | | | | (_| |   <  __/  _| | |  __/
+    |_| |_| |_|\__,_|_|\_\___|_| |_|_|\___|
+;
+
   MOdule cst_00.sas is the SAS makefile
   It 'compiles' all the modules needed to run the driver program.
   Users need to run this first and then they can run a short list
@@ -28,8 +35,7 @@
                * users may want to globally adjust cell width to very wide and change
                  the '@' symbol in the header to an 'alt-enter' (change '@' to 'cntl-shift-J(at same time).
                  Fianlly do a global collapse cell widths to optimum widths
-
-*          _                        _
+           _                        _
   _____  _| |_ ___ _ __ _ __   __ _| |___
  / _ \ \/ / __/ _ \ '__| '_ \ / _` | / __|
 |  __/>  <| ||  __/ |  | | | | (_| | \__ \
@@ -43,12 +49,12 @@
 
   1. Input externals that must exist before make file (cst_000.sas)
 
-     a. ./cst/oto/cat_010.sas  (package of utility macros
+     a. ./cst/oto/cat_010.sas  (package of utility macros)
 
      b. all post 2010 cost report (currently 2011-2019)
         https://downloads.cms.gov/files/hcris/snf19fy2011-(curret year-1).zip (currently 9 years)
 
-     c. .\cst\cst_025snfdescribe.sas7bdat  * descriptions for every cell in every worksheet below doe SNF
+     c. .\cst\cst_025snfdescribe.sas7bdat  * descriptions for every cell in every worksheet below for SNF;
              _               _
   ___  _   _| |_ _ __  _   _| |_
  / _ \| | | | __| '_ \| | | | __|
@@ -60,8 +66,7 @@
         https://tinyurl.com/y9764qvd
         https://www.dropbox.com/s/qzocabam8hp5i7p/cst_300snfcst_300snfpuf20112019.xlsb?dl=0
     2.  Snowflake schema
-
-*_
+ _
 (_)___ ___ _   _  ___  ___
 | / __/ __| | | |/ _ \/ __|
 | \__ \__ \ |_| |  __/\__ \
@@ -74,20 +79,21 @@
      post 2010 will be in the excel puf. This can be fixed because the
      col_describe table will habe meta data on the missing cell.
 
-  2. Requires R (may chage this if I can get sas url engine to work,
+  2. Requires R (may change this if I can get sas url engine to work)
 
-  3. May require 1980s classic SAS. Will not run in EG?
+  3. May require 1980s classic SAS. msy not run in EG?
 
   4. I strongly suggest you put this string on a function key
-     ;;;;/*'*/ *);*};*];*/;/*"*/;%mend;run;quit;%end;end;run;endcomp;%utlfix;
      and highlight and run anytime SAS gets stuck (i have submit on left mouse button)
+     ;;;;/*'*/ *);*};*];*/;/*"*/;%mend;run;quit;%end;end;run;endcomp;%utlfix;
+
+*
  _           _ _     _                   _           _
 | |__  _   _(_) | __| |  _ __  _ __ ___ (_) ___  ___| |_
 | '_ \| | | | | |/ _` | | '_ \| '__/ _ \| |/ _ \/ __| __|
 | |_) | |_| | | | (_| | | |_) | | | (_) | |  __/ (__| |_
 |_.__/ \__,_|_|_|\__,_| | .__/|_|  \___// |\___|\___|\__|
-                        |_|           |__/
-                  __ _
+                  __ _  |_|           |__/
   ___ ___  _ __  / _(_) __ _
  / __/ _ \| '_ \| |_| |/ _` |
 | (_| (_) | | | |  _| | (_| |
@@ -95,16 +101,23 @@
                        |___/
 */
 
+%let gbl_tok   =  cst                 ;   * toten and part of root;
+%let gbl_typ   =  snf                 ;   * skilled nursing facilities;
+%let gbl_dir   =  1                   ;   * if 1 then build directory structure;
+%let gbl_yrs   =  2011-2019           ;   * years to process;
+%let gbl_root  =  d                   ;   * where things are;
+%let gbl_oto   =  &gbl_root.:/cst/oto ;   * autocall library;
+%let gbl_sd1   =  &gbl_root.:/cst     ;   * schema for cost report tables;
 
-%let gbl_tok   =  cst                         ;
-%let gbl_typ   =  snf                         ;   * skilled nursing facilities;
-%let gbl_dir   =  1                           ;   * if 1 then build directory structure;
-%let gbl_yrs   =  2011-2019                   ;   * years to process;
-%let gbl_root  =  d                           ;   * where things are;
-%let gbl_oto   =  &gbl_root.:/cst/oto         ;   * autocall library;
-%let gll_sd1   =  &gbl_root.:/cst             ;   * schema for cost report tables;
+* sas utilities;
+%let gbl_utlinp=  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_010.sas; /* utilities */
+%let gbl_utlout=  &gbl_root:/cst/oto/cst_010.sas; /* autocall folder */
 
-* gbl_exe is used with systask fro parallel processing may be needed for slower laptops not need with my system;
+* cell description table;
+%let gbl_desinp=  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_025snfdescribe_sas7bdat.b64 /* col des */
+%let gbl_desout=  &gbl_root:/cst/cst_025describe.sas7bdat;
+
+* gbl_exe is used with systask fro parallel processing may be needed for slower laptops not needed with my system;
 %let gbl_exe   =  %sysfunc(compbl(&_r\PROGRA~1\SASHome\SASFoundation\9.4\sas.exe -sysin nul -log nul -work &_r\wrk
                   -rsasuser -autoexec &_r\oto\tut_Oto.sas -nosplash -sasautos &_r\oto -RLANG -config &_r\cfg\sasv9.cfg));
 
@@ -114,29 +127,7 @@
 | | | | | | |_
 |_|_| |_|_|\__|
 
-  1. create autocall folder
-  2. create location for snowflake schema
-  3. assign sasautos
 ;
-
-
-* create create autocall folder in .cst/oto;
-
-%if &gbl_dir %then %do;
-
-  data _null_;
-
-      newdir=dcreate('cst',"&gbl_root:/");
-      newdir=dcreate('oto',"&gbl_root:/cst");   * autocall folder;
-
-  run;quit;
-
-%end /* create dir */;
-
-%inc "d:/cst/oto/cst_010.sas";  /* utilities */
-
-libname cst "&gbl_root:/cst";             * location of snowflake schema;
-options sasautos=(sasautos,"&gbl_oto");   * autocall library;
 
 * status switches these switches becore '1' if the corresponding module executed without error;
 * I choose to leave of '%if &cst_050=1 %then execute module cst_100 fornow'
@@ -152,6 +143,18 @@ options sasautos=(sasautos,"&gbl_oto");   * autocall library;
 %let cst_300   =0;
 %let cst_350   =0;
 
+* create create autocall folder in .cst/oto;
+
+%if &gbl_dir %then %do;
+
+  data _null_;
+
+      newdir=dcreate('cst',"&gbl_root:/");
+      newdir=dcreate('oto',"&gbl_root:/cst");   * autocall folder;
+
+  run;quit;
+
+%end /* create dir */;
 *         _       ___  ____   ___
   ___ ___| |_    / _ \| ___| / _ \
  / __/ __| __|  | | | |___ \| | | |
@@ -195,6 +198,8 @@ parmcards4;
     newdir=dcreate('rtf',"&root:/cst/");
     newdir=dcreate('vdo',"&root:/cst/");
     newdir=dcreate('rtf',"&root:/cst/");
+    newdir=dcreate('rda',"&root:/cst/");
+    newdir=dcreate('b64',"&root:/cst/");
 
   run;quit;
 
@@ -208,15 +213,67 @@ parmcards4;
 %mend cst_050;
 ;;;;
 run;quit;
+*                          _
+ ___  __ _ ___  __ _ _   _| |_ ___  ___
+/ __|/ _` / __|/ _` | | | | __/ _ \/ __|
+\__ \ (_| \__ \ (_| | |_| | || (_) \__ \
+|___/\__,_|___/\__,_|\__,_|\__\___/|___/
 
-* test;
+;
+libname cst "&gbl_root:/cst";             * location of snowflake schema;
+options sasautos=(sasautos,"&gbl_oto");   * autocall library;
 
-/*
-%cst_050(root=&gbl_root);
-%put &=cst_050;
-*/
+*           _               _                        _
+  __ _  ___| |_    _____  _| |_ ___ _ __ _ __   __ _| |___
+ / _` |/ _ \ __|  / _ \ \/ / __/ _ \ '__| '_ \ / _` | / __|
+| (_| |  __/ |_  |  __/>  <| ||  __/ |  | | | | (_| | \__ \
+ \__, |\___|\__|  \___/_/\_\\__\___|_|  |_| |_|\__,_|_|___/
+ |___/ _   _   _     _
+ _   _| |_(_) (_) |_(_) ___  ___
+| | | | __| | | | __| |/ _ \/ __|
+| |_| | |_| | | | |_| |  __/\__ \
+ \__,_|\__|_|_|_|\__|_|\___||___/
 
-*         _       _  ___   ___
+;
+* download and compile utilities;
+%utl_submit_r64("
+activity_url <- '&gbl_utlinp';
+download.file(activity_url,'&gbl_utlout');
+");
+
+filename cin "&gbl_utlout" lrecl=4096 recfm=v;
+%inc cin / source;
+*                _        _     _
+ ___  __ _ ___  | |_ __ _| |__ | | ___
+/ __|/ _` / __| | __/ _` | '_ \| |/ _ \
+\__ \ (_| \__ \ | || (_| | |_) | |  __/
+|___/\__,_|___/  \__\__,_|_.__/|_|\___|
+;
+
+%utl_submit_r64("
+activity_url <- 'https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_025snfdescribe_b64';
+download.file(activity_url,'&gbl_dsout');
+");
+
+Only run if
+%*utl_b64encode(d:/cst/cst_025snfdescribe.sas7bdat,d:/cst/b64/cst_025snfdescribe_sas7bdat.b64);
+
+%utl_b64decode(d:/cst/tmp/cst_025snfdescribe.b64,&gbl_desout);
+
+*               _   _       _ _
+  ___ _ __   __| | (_)_ __ (_) |_
+ / _ \ '_ \ / _` | | | '_ \| | __|
+|  __/ | | | (_| | | | | | | | |_
+ \___|_| |_|\__,_| |_|_| |_|_|\__|
+
+;
+
+*                    _       _
+ _ __ ___   ___   __| |_   _| | ___  ___
+| '_ ` _ \ / _ \ / _` | | | | |/ _ \/ __|
+| | | | | | (_) | (_| | |_| | |  __/\__ \
+|_| |_| |_|\___/ \__,_|\__,_|_|\___||___/
+          _       _  __    __
   ___ ___| |_    / |/ _ \ / _ \
  / __/ __| __|   | | | | | | | |
 | (__\__ \ |_    | | |_| | |_| |
@@ -867,8 +924,8 @@ parmcards4;
          real time           2:42.05
     */
 
-    %if &syserr=0 %then %let cst_150_4=1;
-    %else %let cst_150_4=0;
+    %if &sqlobs=0 %then %let cst_150_4=0;
+    %else %let cst_150_4=1;
 
 %mend cst_150_4;
 ;;;;
