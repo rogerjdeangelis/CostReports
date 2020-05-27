@@ -45,17 +45,6 @@
 
 * create create autocall folder in .cst/oto;
 
-%if &gbl_diroto %then %do;
-
-  data _null_;
-
-      newdir=dcreate('cst',"&gbl_root:/");
-      newdir=dcreate('oto',"&gbl_root:/cst");   * autocall folder;
-
-  run;quit;
-
-%end /* create dir */;
-
 libname cst "&gbl_root:/cst";             * location of snowflake schema;
 options sasautos=(sasautos,"&gbl_oto");   * autocall library;
 
@@ -83,14 +72,6 @@ options sasautos=(sasautos,"&gbl_oto");   * autocall library;
                Fianlly do a global collapse cell widths to optimum widths
 */
 
-* build subfolders;
-%if &gbl_dir %then %do;
-
-   %cst_050(
-       root=&gbl_root
-   );
-
-%end;
 
 * Download all post 2010 cost report zip file and unzip them (2010-curret year-1);
 %cst_100(
@@ -191,7 +172,7 @@ options sasautos=(sasautos,"&gbl_oto");   * autocall library;
     ,outmax = cst_300&gbl_typ.max
     ,outxls = cst_300&gbl_typ.puf
 );
-
+* show status of each module;
 %utlnopts;
 %put &=cst_100   ;
 %put &=cst_150   ;
