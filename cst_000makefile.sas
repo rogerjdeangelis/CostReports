@@ -251,11 +251,11 @@ filename cin "&gbl_utlout" lrecl=4096 recfm=v;
 ;
 
 %utl_submit_r64("
-activity_url <- 'https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_025snfdescribe_b64';
+activity_url <- 'https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_025snfdescribe_sas7bdat.b64';
 download.file(activity_url,'&gbl_dsout');
 ");
 
-Only run if
+* Only run if you make a change to the sas table then ulload to github;
 %*utl_b64encode(d:/cst/cst_025snfdescribe.sas7bdat,d:/cst/b64/cst_025snfdescribe_sas7bdat.b64);
 
 %utl_b64decode(d:/cst/tmp/cst_025snfdescribe.b64,&gbl_desout);
