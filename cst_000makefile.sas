@@ -1,6 +1,9 @@
 %let pgm=cst_000makefile;
 
 /*
+
+  Repaced the R code with SAS proc http and powershell(unzip archive) should work in unix?;
+*/
                    _         __ _ _
    _ __ ___   __ _| | _____ / _(_) | ___
   | '_ ` _ \ / _` | |/ / _ \ |_| | |/ _ \
@@ -31,7 +34,7 @@
                * create a master template of all cell names incase the cells are not in the data
                * change the order of the variables for a more logical pdv
                * export to excel
-               * users may want to globally adjust cell width to very wide and change
+               * users need to globally adjust cell width to very wide and change
                  the '@' symbol in the header to an 'alt-enter' (change '@' to 'cntl-shift-J(at same time).
                  Finally do a global collapse cell widths to optimum widths
            _                        _
@@ -84,9 +87,6 @@
 
   4. I strongly suggest you put this string on a function key
      and highlight and run anytime SAS gets stuck (i have submit on left mouse button)
-     ;;;;/*'*/ *);*};*];*/;/*"*/;%mend;run;quit;%end;end;run;endcomp;%utlfix;
-
-*
  _           _ _     _                   _           _
 | |__  _   _(_) | __| |  _ __  _ __ ___ (_) ___  ___| |_
 | '_ \| | | | | |/ _` | | '_ \| '__/ _ \| |/ _ \/ __| __|
@@ -105,7 +105,7 @@
 %let gbl_dir   =  0                   ;   * if 1 then build directory structure;
 %let gbl_dirsub=  0                   ;   * if 1 then build sub directories;
 %let gbl_ext   =  0                   ;   * get externals;
-%let gbl_yrs   =  2011-2019           ;   * years to process;
+%let gbl_yrs   =  2018-2019           ;   * years to process;
 %let gbl_root  =  d                   ;   * where things are;
 %let gbl_oto   =  &gbl_root:/cst/oto  ;   * autocall library;
 %let gbl_sd1   =  &gbl_root:/cst      ;   * schema for cost report tables;
@@ -125,6 +125,7 @@
 
 %put &gbl_tok;
 %put &gbl_sd1;
+
 *_       _ _
 (_)_ __ (_) |_
 | | '_ \| | __|
@@ -165,7 +166,8 @@
 
 %if &gbl_dirsub %then %do;
 
-*         _       ___  ____   ___
+/*
+          _       ___  ____   ___
   ___ ___| |_    / _ \| ___| / _ \
  / __/ __| __|  | | | |___ \| | | |
 | (__\__ \ |_   | |_| |___) | |_| |
@@ -174,12 +176,14 @@
 
 This copies the macro below to your autocall library.
 Create directory structure for costreports
-;
 
 * Note you can edit the code below and it will
   de decompiled and copied to your autocall library;
+*/
 
+optioms mrecall;
 %utl_macrodelete(cst_050);
+%utlfkil(&gbl_oto/cst_050.sas);
 
 filename ft15f001 clear;
 filename ft15f001 "&gbl_oto/cst_050.sas";
@@ -210,6 +214,9 @@ parmcards4;
     newdir=dcreate('rtf',"&root:/cst/");
     newdir=dcreate('rda',"&root:/cst/");
     newdir=dcreate('b64',"&root:/cst/");
+    newdir=dcreate('vba',"&root:/cst/");
+    newdir=dcreate('sas',"&root:/cst/");
+    newdir=dcreate('ps1',"&root:/cst/");
 
   run;quit;
 
@@ -235,6 +242,7 @@ run;quit;
 |___/\__,_|___/\__,_|\__,_|\__\___/|___/
 
 ;
+
 libname cst "&gbl_root:/cst";             * location of snowflake schema;
 options sasautos=(sasautos,"&gbl_oto");   * autocall library;
 
@@ -255,7 +263,6 @@ options sasautos=(sasautos,"&gbl_oto");   * autocall library;
 
     */
 
-    * if you dont have R do this manually;
 
     filename _bcot "&gbl_utlout";
     proc http
@@ -263,9 +270,6 @@ options sasautos=(sasautos,"&gbl_oto");   * autocall library;
        url="&gbl_utlinp"
        out= _bcot;
     run;quit;
-
-    filename cin "&gbl_utlout" lrecl=4096 recfm=v;
-    %inc cin / nosource;
 
     /*               _        _     _
      ___  __ _ ___  | |_ __ _| |__ | | ___
@@ -286,54 +290,6 @@ options sasautos=(sasautos,"&gbl_oto");   * autocall library;
 
     %utl_b64decode(d:/tmp/cst_025snfdescribe_sas7bdat.b64,&gbl_desout);
 
-%put &cst;
-
-
-filename website url 'https://downloads.cms.gov/files/hcris/snf10fy2011.zip';
-filename copy "&gbl_root:/cst/zip/snf10fy2011.zip";
-  data _null_;
-    n=-1;
-    infile website recfm=s nbyte=n length=len;
-    file copy recfm=n;
-    input;
-    put _infile_ $varying32767. len;
-run;quit;
-
-
-
-
-filename copy clear;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 %end;
 
@@ -344,6 +300,21 @@ filename copy clear;
  \___|_| |_|\__,_| |_|_| |_|_|\__|
 
 ;
+
+
+
+*                                             _ _        _              _
+  ___ ___  _ __ ___  _ __ (_) | ___  | |_ ___   ___ | |___
+ / __/ _ \| '_ ` _ \| '_ \| | |/ _ \ | __/ _ \ / _ \| / __|
+| (_| (_) | | | | | | |_) | | |  __/ | || (_) | (_) | \__ \
+ \___\___/|_| |_| |_| .__/|_|_|\___|  \__\___/ \___/|_|___/
+                    |_|
+;
+
+
+* compile utility macros;
+filename cin "&gbl_utlout" lrecl=4096 recfm=v;
+%inc cin / source;
 
 *                    _       _
  _ __ ___   ___   __| |_   _| | ___  ___
@@ -358,7 +329,11 @@ filename copy clear;
             |_____|
 ;
 
+* download all post 2010 cost report zip file and unzip them (2010-curret year-1);
+
+options mrecall;
 %utl_macrodelete(cst_100);
+%utlfkil(&gbl_oto/cst_100.sas);
 
 filename ft15f001 "&gbl_oto/cst_100.sas";
 parmcards4;
@@ -379,7 +354,8 @@ parmcards4;
 
      /* for checking without macro
         %let cst=snf;
-        %let year=2011-2019;
+        %let root=d;
+        %let yr=2018-2019;
      */
 
      %let beg=%scan(&year,1,%str(-));
@@ -392,7 +368,8 @@ parmcards4;
 
      %do yr=&beg %to &end;
 
-         %utlnopts;
+         /* %let yr=2019; */
+
          %let dwnlod = https://downloads.cms.gov/files/hcris/&cst.10fy&yr..zip;
          %let zip    = &root:/cst/zip/&cst.10fy&yr..zip;
          %let alpha  = &root:/cst/csv/&cst.10_&yr._alpha.csv;;
@@ -411,37 +388,46 @@ parmcards4;
          %utlfkil(&nmrc );
          %utlfkil(&rpt  );
 
-         * call R to download and unzip - had issues with SAS;
-         %utl_submit_r64("
-         activity_url <- '&dwnlod';
-         download.file(activity_url, '&zip');
-         unzip('&zip',exdir='&root:/cst/csv');
-         ");
+       * overkill for now because SAS tend to lock files;
+       filename download clear;
+       filename download "&zip";
+       proc http
+          method='GET'
+          url="&dwnlod"
+          out=download;
+       run;quit;
+       filename download clear;
 
-          data _null_;
+       %let cmd="powershell expand-archive -path '&zip' -destinationpath 'd:\cst\csv\';";
+       options xwait xsync;run;quit;
+       systask kill _ps1;
+       systask command &cmd taskname=_ps1;
+       waitfor _ps1;
 
-             length zipchk $64;
-             zipchk   = ifc(fileexist("&zip")  , "Created &zip"   , "Failed &zip");
-             alphachk = ifc(fileexist("&alpha"), "Created &alpha" , "Failed &alpha");
-             nmrcchk  = ifc(fileexist("&nmrc") , "Created &nmrc"  , "Failed &nmrc");
-             rptchk   = ifc(fileexist("&rpt")  , "Created &rpt"   , "Failed &rpt");
-             if  Sum(
-                fileexist("&zip")   +
-                fileexist("&alpha") +
-                fileexist("&nmrc")  +
-                fileexist("&rpt"))=4 then do;
+      data _null_;
 
-                  putlog //  "===================================" /
-                             zipchk   = /
-                             alphachk = /
-                             nmrcchk  = /
-                             rptchk   = /
-                             "===================================" //;
-                  call symputx("one",1);
-                  rc=dosubl('%let numjob=%eval(&numjob + &one);' );
-             end;
+         length zipchk $64;
+         zipchk   = ifc(fileexist("&zip")  , "Created &zip"   , "Failed &zip");
+         alphachk = ifc(fileexist("&alpha"), "Created &alpha" , "Failed &alpha");
+         nmrcchk  = ifc(fileexist("&nmrc") , "Created &nmrc"  , "Failed &nmrc");
+         rptchk   = ifc(fileexist("&rpt")  , "Created &rpt"   , "Failed &rpt");
+         if  Sum(
+            fileexist("&zip")   +
+            fileexist("&alpha") +
+            fileexist("&nmrc")  +
+            fileexist("&rpt"))=4 then do;
 
-          run;quit;
+              putlog //  "===================================" /
+                         zipchk   = /
+                         alphachk = /
+                         nmrcchk  = /
+                         rptchk   = /
+                         "===================================" //;
+              call symputx("one",1);
+              rc=dosubl('%let numjob=%eval(&numjob + &one);' );
+         end;
+
+      run;quit;
 
      %end; /* years */
 
@@ -459,7 +445,7 @@ run;quit;
 %cst_100(
        cst=&gbl_typ
       ,root=&gbl_root
-      ,year=&gbl_yrs
+      ,year=2011-2019
        );
 
 %put &=cst_100;
@@ -479,9 +465,11 @@ run;quit;
      |_|
 ;
 
+* convert all report csvs into a single sas table;
 
-
+optiomd mrecall;
 %utl_macrodelete(cst_150_1);
+%utlfkil(&gbl_oto/cst_150_1.sas);
 
 filename ft15f001 "&gbl_oto/cst_150_1.sas";
 parmcards4;
@@ -674,13 +662,13 @@ run;quit;
 
 
 /*
-   * report csvs;
-   %cst_150_1(
-       cst=&gbl_typ
-       ,root=&gbl_root
-       ,yrs=&gbl_yrs
-       ,out=cst_150&gbl_typ.rpt
-       );
+* report csvs;
+%cst_150_1(
+    cst=&gbl_typ
+    ,root=&gbl_root
+    ,yrs=&gbl_yrs
+    ,out=cst_150&gbl_typ.rpt
+    );
 
 %put &=cst_150_1;
 */
@@ -692,7 +680,12 @@ run;quit;
 |_| |_|_| |_| |_|_|  \___|
 
 ;
+
+* convert all numeric variable csvs into a single sas table;
+
+options mrecall;
 %utl_macrodelete(cst_150_2);
+%utlfkil(&gbl_oto/cst_150_2.sas);
 
 filename ft15f001 "&gbl_oto/cst_150_2.sas";
 parmcards4;
@@ -773,7 +766,7 @@ parmcards4;
     %end;  /* yr end */
 
     %if &numjob=&csvs %then %let cst_150_2=1;
-    %else %let cst_100_2=0;
+    %else %let cst_150_2=0;
 
     run;quit;
 
@@ -789,7 +782,7 @@ run;quit;
     ,out=cst_150&gbl_typ.num
     );
 
-%put &cst_100_2;
+%put &cst_150_2;
 */
 
 
@@ -801,7 +794,11 @@ run;quit;
         |_|
 ;
 
+* convert all character variable csvs into a single sas table;
+
+options mrecall;
 %utl_macrodelete(cst_150_3);
+%utlfkil(&gbl_oto/cst_150_3.sas);
 
 filename ft15f001 "&gbl_oto/cst_150_3.sas";
 parmcards4;
@@ -886,13 +883,13 @@ run;quit;
 options compress=char;
 
 /*
-   * report csvs;
-   %cst_150_3(
-       cst=&gbl_typ
-       ,root=&gbl_root
-       ,yrs=&gbl_yrs
-       ,out=cst_150&gbl_typ.alp
-       );
+* report csvs;
+%cst_150_3(
+    cst=&gbl_typ
+    ,root=&gbl_root
+    ,yrs=&gbl_yrs
+    ,out=cst_150&gbl_typ.alp
+    );
 
 %put &=cst_150_3;
 */
@@ -904,7 +901,12 @@ options compress=char;
 |_| |_|\__,_|_| |_| |_|\__,_|_| .__/|_| |_|\__,_|
                               |_|
 ;
+
+* combine report, numeric and character into one sas table note all data in one 40 byte char variable;
+
+options mrecall;
 %utl_macrodelete(cst_150_4);
+%utlfkil(&gbl_oto/cst_150_4.sas);
 
 filename ft15f001 "&gbl_oto/cst_150_4.sas";
 parmcards4;
@@ -1014,6 +1016,8 @@ run;quit;
       ,out   = cst_150&gbl_typ.numalp
     );
 
+    %put cst_150_4=;
+
 */
 
 *         _       ____   ___   ___
@@ -1024,8 +1028,11 @@ run;quit;
             |_____|
 ;
 
+* for G000000 sheet sum for the four columns and add a fith columg to table from 4;
 
+options mrecall;
 %utl_macrodelete(cst_200);
+%utlfkil(&gbl_oto/cst_200.sas);
 
 filename ft15f001 "&gbl_oto/cst_200.sas";
 parmcards4;
@@ -1132,6 +1139,7 @@ options obs=max;
     ,inp    = cst_150&gbl_typ.numalp
     ,outfiv = cst_200&gbl_typ.fiv
    );
+   %put &=cst_200;
 */
 
 *         _       ____  ____   ___
@@ -1142,7 +1150,11 @@ options obs=max;
             |_____|
 ;
 
+* add descriptions to every cell in the col_cel_describe table;
+
+options mrecall;
 %utl_macrodelete(cst_250);
+%utlfkil(&gbl_oto/cst_250.sas);
 
 filename ft15f001 "&gbl_oto/cst_250.sas";
 parmcards4;
@@ -1279,7 +1291,19 @@ options obs=max;
             |_____|
 ;
 
+/*
+* transpose and add a label with the data from col_cel_describe
+* create a master template of all cell names incase the cells are not in the data
+* change the order of the variables for a more logical pdv
+* export to excel
+* users may want to globally adjust cell width to very wide and change
+  the '@' symbol in the header to an 'alt-enter' (change '@' to 'cntl-shift-J(at same time).
+  Finally do a global collapse cell widths to optimum widths
+*/
+
+options mrecall;
 %utl_macrodelete(cst_300);
+%utlfkil(&gbl_oto/cst_300.sas);
 
 filename ft15f001 "&gbl_oto/cst_300.sas";
 parmcards4;
@@ -1495,8 +1519,7 @@ run;quit;
 
 %symdel S2 S3 G0 G2 G3 s7 s4 c0 C0 O0 A0 A7 E0 xyrsn / nowarn;
 
-options obs=1000000;
-
+options obs=max;
 %cst_300(
      typ    = &gbl_typ
     ,yrs    = &gbl_yrs
@@ -1518,56 +1541,5 @@ options obs=1000000;
 
 ;
 
-%let status=1;
-
-%if &status %then %do;
-
-  data class;
-     set sashelp.class;
-  run;quit;
-
-%end;
-
-4110  %let status=1;
-4111  %if &status %then %do;
-SYMBOLGEN:  Macro variable STATUS resolves to 1
-4112    data class;
-4113       set sashelp.class;
-4114    run;
-
-NOTE: There were 19 observations read from the data set SASHELP.CLASS.
-NOTE: The data set WORK.CLASS has 19 observations and 5 variables.
-NOTE: DATA statement used (Total process time):
-      real time           0.06 seconds
-      user cpu time       0.01 seconds
-      system cpu time     0.00 seconds
-      memory              557.31k
-      OS Memory           24560.00k
-      Timestamp           05/27/2020 04:11:50 PM
-      Step Count                        50  Switch Count  0
 
 
-4114!       quit;
-4115  %end;
-
-%let status=0;
-
-%if &status %then %do;
-
-  data class;
-     set sashelp.class;
-  run;quit;
-
-%end;
-%else %put "Failed";
-
-4122  %let status=0;
-4123  %if &status %then %do;
-SYMBOLGEN:  Macro variable STATUS resolves to 0
-4124    data class;
-4125       set sashelp.class;
-4126    run;quit;
-4127  %end;
-4128  %else %put "Failed";
-
-"Failed"
