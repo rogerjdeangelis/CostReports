@@ -1608,9 +1608,9 @@ run;quit;
 %macro utl_macrodelete(macro)/des="delete catalog macro entry";                                                                                                                                                                                                 
    %if (%sysfunc(cexist(&macro))) %then %do;                                                                                                                                                                                                                    
        proc catalog catalog=work.sasmacr;                                                                                                                                                                                                                       
-           delete cst_050.macro;                                                                                                                                                                                                                                
+           delete &macro..macro;                                                                                                                                                                                                                                
        quit;                                                                                                                                                                                                                                                    
-       %put work.sasmacr.cst_050.macro deleted;                                                                                                                                                                                                                 
+       %put work.sasmacr.&macro..macro deleted;                                                                                                                                                                                                                 
    %end;                                                                                                                                                                                                                                                        
 %mend utl_macrodelete;        
 
@@ -2465,3 +2465,48 @@ ods results off;
 %mend utl_submit_py64_38;            
 
 
+%macro utl_b64encode(inp,out);
+   /*
+    %let inp=d:/sd1/cars.zip;
+    %let out=d:/sd1/carsEnc.b64;
+   */
+   data _null_;
+     length b64 $ 76 line $ 57;
+     retain line "";
+     infile "&inp" recfm=F lrecl= 1 end=eof;
+     input @1 stream $char1.;
+     file "&out" lrecl=76;
+     substr(line,(_N_-(CEIL(_N_/57)-1)*57),1) = byte(rank(stream));
+     if mod(_N_,57)=0 or EOF then do;
+       if eof then b64=put(trim(line),$base64X76.);
+       else b64=put(line, $base64X76.);
+       put b64;
+       line="";
+     end;
+   run;quit;
+%mend utl_b64encode;
+%macro utl_b64decode(inp,out);
+
+   /*
+   %let inp=d:/sd1/carsEnc.b64;
+   %let out=d:/sd1/carsDec.zip;
+   */
+
+data _null_;
+  length b64 $ 76 byte $ 1;
+  infile "&inp" lrecl= 76 truncover length=b64length;
+  input @1 b64 $base64X76.;
+  if _N_=1 then putlog "NOTE: Detected Base64 Line Length of " b64length;
+  file "&out" recfm=F lrecl= 1;
+  do i=1 to (b64length/4)*3;
+    byte=byte(rank(substr(b64,i, 1)));
+    put byte $char1.;
+  end;
+run;quit;
+
+%mend utl_b64decode;
+%macro xit/
+  cmd
+  des="Save last program so it can be restored next time you start SAS";
+  home;save pgm_last r;%sysfunc(sleep(1,1));bye;
+%mend xit;%macro dosubl(arg);                       %let rc=%qsysfunc(dosubl(&arg));      %mend dosubl;                                                                   
