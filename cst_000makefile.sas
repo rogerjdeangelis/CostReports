@@ -1,21 +1,21 @@
 %let pgm=cst_000makefile;
 
 /*
+  This code can run any codt report
   Repaced the R code with SAS proc http and powershell(unzip archive) should work in unix?;
-*/
-                   _         __ _ _
+
    _ __ ___   __ _| | _____ / _(_) | ___
   | '_ ` _ \ / _` | |/ / _ \ |_| | |/ _ \
   | | | | | | (_| |   <  __/  _| | |  __/
   |_| |_| |_|\__,_|_|\_\___|_| |_|_|\___|
 
- MOdule cst_00.sas is the SAS makefile
+  Module cst_000.sas is the SAS makefile
   It 'compiles' all the modules needed to run the driver program.
   Users need to run this first and then they can run a short list
   of mudules using the 'module' driver.
   Users can also change and 'recompile' a module by editing the source
   located in the makefile. Highlight and submit highlighted code.
-   Run
+
    Modules
    Sequentially
   %cst_000     * makefile - after running this you should be able to execute the module driver;
@@ -32,7 +32,7 @@
                * change the order of the variables for a more logical pdv
                * export to excel
                * users need to globally adjust cell width to very wide and change
-                 the '@' symbol in the header to an 'alt-enter' (change '@' to 'cntl-shift-J(at same time).
+                 the '@' symbol in the header to an 'alt-enter' (change '@' to 'cntl-shift-J' (at same time).
                  Finally do a global collapse cell widths to optimum widths
            _                        _
   _____  _| |_ ___ _ __ _ __   __ _| |___
@@ -69,6 +69,7 @@
 | / __/ __| | | |/ _ \/ __|
 | \__ \__ \ |_| |  __/\__ \
 |_|___/___/\__,_|\___||___/
+
   1. If a cell has not been poulated in all cost reports post 2010 then
      it will not appear in the output excel puf. It will be
      in the snowflake schema. All cells that have at least one poluated value
@@ -78,6 +79,10 @@
   3. May require 1980s classic SAS. msy not run in EG?
   4. I strongly suggest you put this string on a function key
      and highlight and run anytime SAS gets stuck (i have submit on left mouse button)
+*/
+
+
+/*
  _           _ _     _                   _           _
 | |__  _   _(_) | __| |  _ __  _ __ ___ (_) ___  ___| |_
 | '_ \| | | | | |/ _` | | '_ \| '__/ _ \| |/ _ \/ __| __|
@@ -91,29 +96,39 @@
                        |___/
 */
 
-%let gbl_tok   =  cst                 ;   * toten and part of root;
-%let gbl_typ   =  snf                 ;   * skilled nursing facilities;
-%let gbl_dir   =  1                   ;   * if 1 then build directory structure;
-%let gbl_dirsub=  1                   ;   * if 1 then build sub directories;
-%let gbl_ext   =  1                   ;   * get externals;
-%let gbl_yrs   =  2018-2019           ;   * years to process;
-%let gbl_root  =  c                   ;   * where things are;
-%let gbl_oto   =  &gbl_root:/cst/oto  ;   * autocall library;
-%let gbl_sd1   =  &gbl_root:/cst      ;   * schema for cost report tables;
+* so you can rerun safely;
+%symdel
+    gbl_tok gbl_typ gbl_yrs gbl_make gbl_drvr gbl_tool gbl_ext gbl_dir gbl_dirsub gbl_oto
+    gbl_makefil gbl_driver gbl_tools gbl_root gbl_oto gbl_sd1 gbl_desinp gbl_desout / nowarn;
 
-%put &=gbl_oto;
-* sas utilities;
-%let gbl_utlinp=  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_010.sas; /* utilities */
 
-%let gbl_utlout=  &gbl_root:/cst/oto/cst_010.sas; /* autocall folder */
-%let gbl_desinp=  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_025snfdescribe_sas7bdat.b64; /* col des */
-%let gbl_desout=  &gbl_root:/cst/cst_025snfdescribe.sas7bdat;
+%let gbl_tok   =  cst                    ;   * token and part of root;
+%let gbl_typ   =  snf                    ;   * skilled nursing facilities;
+%let gbl_yrs   =  2019-2019              ;   * years to process;
+
+%let gbl_make     =  1                   ;   * if 1 download makefile else 0;
+%let gbl_drvr     =  1                   ;   * if 1 download driver else 0;
+%let gbl_tool     =  1                   ;   * if 1 download driver else 0;
+%let gbl_ext      =  1                   ;   * if 1 then get driver else 0;
+%let gbl_dir      =  1                   ;   * if 1 then build directory structure else 0;
+%let gbl_dirsub   =  1                   ;   * if 1 then build sub directories else 0;
+
+%let gbl_makefile =  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_000.makefile.sas; /* makefile */
+%let gbl_driver   =  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_005driver.sas; /* driver */
+%let gbl_tools    =  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_010.sas; /* tools */
+
+%let gbl_root     =  c                   ;   * where things are;
+%let gbl_oto      =  &gbl_root:/cst/oto  ;   * autocall library;
+%let gbl_sd1      =  &gbl_root:/cst      ;   * schema for cost report tables;
+
+%let gbl_desinp   =  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_025snfdescribe_sas7bdat.b64;
+%let gbl_desout   =  &gbl_root:/cst/cst_025snfdescribe.sas7bdat;
 
 * gbl_exe is used with systask for parallel processin. May be needed for slower laptops not needed with my system;
 %let gbl_exe   =  %sysfunc(compbl(&_r\PROGRA~1\SASHome\SASFoundation\9.4\sas.exe -sysin nul -log nul -work &_r\wrk
                   -rsasuser -autoexec &_r\oto\tut_Oto.sas -nosplash -sasautos &_r\oto -RLANG -config &_r\cfg\sasv9.cfg));
-%put &gbl_tok;
-%put &gbl_sd1;
+
+%put &=gbl_oto;
 
 *_       _ _
 (_)_ __ (_) |_
@@ -122,7 +137,7 @@
 |_|_| |_|_|\__|
 ;
 
-* status switches these switches are '1' if the corresponding module executed without error;
+* status switches for module return codes.  These switches are '1' if the corresponding module executed without error;
 * I choose to leave of '%if &cst_050=1 %then execute module cst_100 fornow;
 
 %let cst_050   =0;
@@ -150,6 +165,63 @@
   run;quit;
 
 %end /* create dir */;
+*           _                     _         __ _ _
+  __ _  ___| |_   _ __ ___   __ _| | _____ / _(_) | ___
+ / _` |/ _ \ __| | '_ ` _ \ / _` | |/ / _ \ |_| | |/ _ \
+| (_| |  __/ |_  | | | | | | (_| |   <  __/  _| | |  __/
+ \__, |\___|\__| |_| |_| |_|\__,_|_|\_\___|_| |_|_|\___|
+ |___/
+;
+
+%if &gbl_make %then %do;
+
+    filename _bcot "&gbl_oto/cst_000makefile.sas";
+    proc http
+       method='get'
+       url="&gbl_makefile"
+       out= _bcot;
+    run;quit;
+
+%end;
+
+*           _         _      _
+  __ _  ___| |_    __| |_ __(_)_   _____ _ __
+ / _` |/ _ \ __|  / _` | '__| \ \ / / _ \ '__|
+| (_| |  __/ |_  | (_| | |  | |\ V /  __/ |
+ \__, |\___|\__|  \__,_|_|  |_| \_/ \___|_|
+ |___/
+;
+
+%if &gbl_drvr %then %do;
+
+    filename _bcot "&gbl_oto/cst_005driver.sas";
+    proc http
+       method='get'
+       url="&gbl_driver"
+       out= _bcot;
+    run;quit;
+
+%end ;
+
+/*
+ _              _
+| |_ ___   ___ | |___
+| __/ _ \ / _ \| / __|
+| || (_) | (_) | \__ \
+ \__\___/ \___/|_|___/
+*/
+
+
+%if &gbl_tool %then %do;
+
+  filename _bcot "&gbl_oto/cst_010.sas";
+  proc http
+     method='get'
+     url="&gbl_tools"
+     out= _bcot;
+  run;quit;
+
+%end;
 
 *                          _
  ___  __ _ ___  __ _ _   _| |_ ___  ___
@@ -160,6 +232,20 @@
 
 libname cst "&gbl_root:/cst";             * location of snowflake schema;
 options sasautos=(sasautos,"&gbl_oto");   * autocall library;
+
+*                          _ _        _              _
+  ___ ___  _ __ ___  _ __ (_) | ___  | |_ ___   ___ | |___
+ / __/ _ \| '_ ` _ \| '_ \| | |/ _ \ | __/ _ \ / _ \| / __|
+| (_| (_) | | | | | | |_) | | |  __/ | || (_) | (_) | \__ \
+ \___\___/|_| |_| |_| .__/|_|_|\___|  \__\___/ \___/|_|___/
+                    |_|
+;
+
+%put &=gbl_oto;
+
+* compile utility macros;
+filename cin "&gbl_oto/cst_010.sas" lrecl=4096 recfm=v;
+%inc cin / nosource;
 
 %if &gbl_dirsub %then %do;
 
@@ -231,39 +317,6 @@ run;quit;
 
 %if &gbl_ext %then %do;
 
-    /*
-                _               _                        _
-      __ _  ___| |_    _____  _| |_ ___ _ __ _ __   __ _| |___
-     / _` |/ _ \ __|  / _ \ \/ / __/ _ \ '__| '_ \ / _` | / __|
-    | (_| |  __/ |_  |  __/>  <| ||  __/ |  | | | | (_| | \__ \
-     \__, |\___|\__|  \___/_/\_\\__\___|_|  |_| |_|\__,_|_|___/
-     |___/ _   _   _     _
-     _   _| |_(_) (_) |_(_) ___  ___
-    | | | | __| | | | __| |/ _ \/ __|
-    | |_| | |_| | | | |_| |  __/\__ \
-     \__,_|\__|_|_|_|\__|_|\___||___/
-    */
-
-
-    filename _bcot "&gbl_utlout";
-    proc http
-       method='get'
-       url="&gbl_utlinp"
-       out= _bcot;
-    run;quit;
-
-    *                          _ _        _              _
-      ___ ___  _ __ ___  _ __ (_) | ___  | |_ ___   ___ | |___
-     / __/ _ \| '_ ` _ \| '_ \| | |/ _ \ | __/ _ \ / _ \| / __|
-    | (_| (_) | | | | | | |_) | | |  __/ | || (_) | (_) | \__ \
-     \___\___/|_| |_| |_| .__/|_|_|\___|  \__\___/ \___/|_|___/
-                        |_|
-    ;
-
-    * compile utility macros;
-    filename cin "&gbl_utlout" lrecl=4096 recfm=v;
-    %inc cin / nosource;
-
     /*               _        _     _
      ___  __ _ ___  | |_ __ _| |__ | | ___
     / __|/ _` / __| | __/ _` | '_ \| |/ _ \
@@ -299,6 +352,44 @@ run;quit;
  \___|_| |_|\__,_| |_|_| |_|_|\__|
 ;
 
+/*
+This is what you should see
+
+
+x 'tree "c:\cst" /F /A | clip';
+cntl-v to oaste where you want it
+
+Folder PATH listing for volume Windows
+Volume serial number is F438-1608
+C:\CST
+   |   cst_025snfdescribe.sas7bdat
+   |
+   +---b64
+   |       cst_025snfdescribe_sas7bdat.b64
+   |
+   +---csv
+   +---doc
+   +---fmt
+   +---log
+   +---lst
+   +---oto
+   |       cst_000makefile.sas
+   |       cst_005driver.sas
+   |       cst_010.sas
+   |       cst_050.sas
+   |
+   +---pdf
+   +---ppt
+   +---ps1
+   +---rda
+   +---rtf
+   +---sas
+   +---vba
+   +---vdo
+   +---xls
+\---zip
+
+*/
 
 *                    _       _
  _ __ ___   ___   __| |_   _| | ___  ___
@@ -439,10 +530,10 @@ parmcards4;
 ;;;;
 run;quit;
 
-/*
-%put &gbl_root:/cst/oto/cst_100.sas;
-
 %inc "&gbl_root:/cst/oto/cst_100.sas" / source;
+
+/*
+
 %cst_100(
        cst=&gbl_typ
       ,root=&gbl_root
@@ -658,10 +749,10 @@ parmcards4;
 ;;;;
 run;quit;
 
+%inc "&gbl_root:/cst/oto/cst_150_1.sas" / source;
 
 /*
 * report csvs;
-%inc "&gbl_root:/cst/oto/cst_150_1.sas" / source;
 %cst_150_1(
     cst=&gbl_typ
     ,root=&gbl_root
@@ -771,8 +862,9 @@ parmcards4;
 ;;;;
 run;quit;
 
-/*
 %inc "&gbl_root:/cst/oto/cst_150_2.sas" / source;
+
+/*
 %cst_150_2(
     cst=&gbl_typ
     ,root=&gbl_root
@@ -877,9 +969,10 @@ parmcards4;
 ;;;;
 run;quit;
 
+%inc "&gbl_root:/cst/oto/cst_150_3.sas" / source;
+
 /*
 * report csvs;
-%inc "&gbl_root:/cst/oto/cst_150_3.sas" / source;
 %cst_150_3(
     cst=&gbl_typ
     ,root=&gbl_root
@@ -997,14 +1090,16 @@ parmcards4;
 ;;;;
 run;quit;
 
+%inc "&gbl_root:/cst/oto/cst_150_4.sas";
+
 /*
-%inc "&gbl_root:/cst/o%cst_150_4(
+    %cst_150_4(
        num   = cst_150&gbl_typ.num
       ,alpha = cst_150&gbl_typ.alp
       ,rpt   = cst_150&gbl_typ.rpt
       ,out   = cst_150&gbl_typ.numalp
     );
-    %put cst_150_4=;       to/cst_150_4.sas" / source;
+    %put cst_150_4=;
 
 */
 
@@ -1119,8 +1214,9 @@ parmcards4;
 ;;;;
 run;quit;
 
-/*
 %inc "&gbl_root:/cst/oto/cst_200.sas" / source;
+
+/*
 %cst_200(
      typ    = &gbl_typ
     ,yrs    = &gbl_yrs
@@ -1154,7 +1250,8 @@ parmcards4;
     ,outsd1 = cst_250&typ.fac
    ) / des="Create sas table and excel deliverables";
 
-     /* Run without macro
+     /* Run without macro;
+
         %let typ    = snf;
         %let yrs    = 2011-2019;
         %let inpsd1 = cst_200&typ.fiv;
@@ -1255,13 +1352,14 @@ parmcards4;
 ;;;;
 run;quit;
 
-/*
 %inc "&gbl_root:/cst/oto/cst_200.sas" / source;
+
+/*
 %cst_250(
      typ    = &gbl_typ
     ,yrs    = &gbl_yrs
     ,inpsd1 = cst_200&gbl_typ.fiv
-    ,coldes = cst_025&gbl_typ.describe  /* this is an external input */
+    ,coldes = cst_025&gbl_typ.describe
     ,outsd1 = cst_250&gbl_typ.fac
    );
    %put &=cst_250;
@@ -1499,6 +1597,7 @@ run;quit;
 options obs=max;
 
 %inc "&gbl_root:/cst/oto/cst_300.sas" / source;
+
 %cst_300(
      typ    = &gbl_typ
     ,yrs    = &gbl_yrs
@@ -1509,10 +1608,15 @@ options obs=max;
     ,outxls = cst_300&gbl_typ.puf
    );
    %put &=cst_300;
+
 */
 
-*               _
+/*               _
   ___ _ __   __| |
  / _ \ '_ \ / _` |
 |  __/ | | | (_| |
  \___|_| |_|\__,_|
+
+*/
+
+
