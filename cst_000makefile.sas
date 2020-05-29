@@ -1,7 +1,6 @@
 %let pgm=cst_000makefile;
 
 /*
-
   Repaced the R code with SAS proc http and powershell(unzip archive) should work in unix?;
 */
                    _         __ _ _
@@ -10,17 +9,15 @@
   | | | | | | (_| |   <  __/  _| | |  __/
   |_| |_| |_|\__,_|_|\_\___|_| |_|_|\___|
 
-  MOdule cst_00.sas is the SAS makefile
+ MOdule cst_00.sas is the SAS makefile
   It 'compiles' all the modules needed to run the driver program.
   Users need to run this first and then they can run a short list
   of mudules using the 'module' driver.
   Users can also change and 'recompile' a module by editing the source
   located in the makefile. Highlight and submit highlighted code.
-
    Run
    Modules
    Sequentially
-
   %cst_000     * makefile - after running this you should be able to execute the module driver;
   %cst_050     * create directory structure
   %cst_100     * download all post 2010 cost report zip file and unzip them (2010-curret year-1)
@@ -63,7 +60,6 @@
 | (_) | |_| | |_| |_) | |_| | |_
  \___/ \__,_|\__| .__/ \__,_|\__|
                 |_|
-
     1.  Puf deliverable
         https://tinyurl.com/y9764qvd
         https://www.dropbox.com/s/qzocabam8hp5i7p/cst_300snfcst_300snfpuf20112019.xlsb?dl=0
@@ -73,18 +69,13 @@
 | / __/ __| | | |/ _ \/ __|
 | \__ \__ \ |_| |  __/\__ \
 |_|___/___/\__,_|\___||___/
-
-
   1. If a cell has not been poulated in all cost reports post 2010 then
      it will not appear in the output excel puf. It will be
      in the snowflake schema. All cells that have at least one poluated value
      post 2010 will be in the excel puf. This can be fixed because the
      col_describe table will habe meta data on the missing cell.
-
   2. Requires R (may change this if I can get sas url engine to work)
-
   3. May require 1980s classic SAS. msy not run in EG?
-
   4. I strongly suggest you put this string on a function key
      and highlight and run anytime SAS gets stuck (i have submit on left mouse button)
  _           _ _     _                   _           _
@@ -102,27 +93,25 @@
 
 %let gbl_tok   =  cst                 ;   * toten and part of root;
 %let gbl_typ   =  snf                 ;   * skilled nursing facilities;
-%let gbl_dir   =  0                   ;   * if 1 then build directory structure;
-%let gbl_dirsub=  0                   ;   * if 1 then build sub directories;
-%let gbl_ext   =  0                   ;   * get externals;
+%let gbl_dir   =  1                   ;   * if 1 then build directory structure;
+%let gbl_dirsub=  1                   ;   * if 1 then build sub directories;
+%let gbl_ext   =  1                   ;   * get externals;
 %let gbl_yrs   =  2018-2019           ;   * years to process;
-%let gbl_root  =  d                   ;   * where things are;
+%let gbl_root  =  c                   ;   * where things are;
 %let gbl_oto   =  &gbl_root:/cst/oto  ;   * autocall library;
 %let gbl_sd1   =  &gbl_root:/cst      ;   * schema for cost report tables;
 
 %put &=gbl_oto;
-
 * sas utilities;
 %let gbl_utlinp=  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_010.sas; /* utilities */
-%let gbl_utlout=  &gbl_root:/cst/oto/cst_010.sas; /* autocall folder */
 
+%let gbl_utlout=  &gbl_root:/cst/oto/cst_010.sas; /* autocall folder */
 %let gbl_desinp=  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_025snfdescribe_sas7bdat.b64; /* col des */
 %let gbl_desout=  &gbl_root:/cst/cst_025snfdescribe.sas7bdat;
 
 * gbl_exe is used with systask for parallel processin. May be needed for slower laptops not needed with my system;
 %let gbl_exe   =  %sysfunc(compbl(&_r\PROGRA~1\SASHome\SASFoundation\9.4\sas.exe -sysin nul -log nul -work &_r\wrk
                   -rsasuser -autoexec &_r\oto\tut_Oto.sas -nosplash -sasautos &_r\oto -RLANG -config &_r\cfg\sasv9.cfg));
-
 %put &gbl_tok;
 %put &gbl_sd1;
 
@@ -131,7 +120,6 @@
 | | '_ \| | __|
 | | | | | | |_
 |_|_| |_|_|\__|
-
 ;
 
 * status switches these switches are '1' if the corresponding module executed without error;
@@ -163,6 +151,15 @@
 
 %end /* create dir */;
 
+*                          _
+ ___  __ _ ___  __ _ _   _| |_ ___  ___
+/ __|/ _` / __|/ _` | | | | __/ _ \/ __|
+\__ \ (_| \__ \ (_| | |_| | || (_) \__ \
+|___/\__,_|___/\__,_|\__,_|\__\___/|___/
+;
+
+libname cst "&gbl_root:/cst";             * location of snowflake schema;
+options sasautos=(sasautos,"&gbl_oto");   * autocall library;
 
 %if &gbl_dirsub %then %do;
 
@@ -173,17 +170,13 @@
 | (__\__ \ |_   | |_| |___) | |_| |
  \___|___/\__|___\___/|____/ \___/
             |_____|
-
 This copies the macro below to your autocall library.
 Create directory structure for costreports
-
 * Note you can edit the code below and it will
   de decompiled and copied to your autocall library;
 */
 
-optioms mrecall;
-%utl_macrodelete(cst_050);
-%utlfkil(&gbl_oto/cst_050.sas);
+options mrecall;
 
 filename ft15f001 clear;
 filename ft15f001 "&gbl_oto/cst_050.sas";
@@ -217,6 +210,7 @@ parmcards4;
     newdir=dcreate('vba',"&root:/cst/");
     newdir=dcreate('sas',"&root:/cst/");
     newdir=dcreate('ps1',"&root:/cst/");
+    newdir=dcreate('b64',"&root:/cst/");
 
   run;quit;
 
@@ -235,18 +229,6 @@ run;quit;
 
 %end;
 
-*                          _
- ___  __ _ ___  __ _ _   _| |_ ___  ___
-/ __|/ _` / __|/ _` | | | | __/ _ \/ __|
-\__ \ (_| \__ \ (_| | |_| | || (_) \__ \
-|___/\__,_|___/\__,_|\__,_|\__\___/|___/
-
-;
-
-libname cst "&gbl_root:/cst";             * location of snowflake schema;
-options sasautos=(sasautos,"&gbl_oto");   * autocall library;
-
-
 %if &gbl_ext %then %do;
 
     /*
@@ -260,7 +242,6 @@ options sasautos=(sasautos,"&gbl_oto");   * autocall library;
     | | | | __| | | | __| |/ _ \/ __|
     | |_| | |_| | | | |_| |  __/\__ \
      \__,_|\__|_|_|_|\__|_|\___||___/
-
     */
 
 
@@ -271,6 +252,18 @@ options sasautos=(sasautos,"&gbl_oto");   * autocall library;
        out= _bcot;
     run;quit;
 
+    *                          _ _        _              _
+      ___ ___  _ __ ___  _ __ (_) | ___  | |_ ___   ___ | |___
+     / __/ _ \| '_ ` _ \| '_ \| | |/ _ \ | __/ _ \ / _ \| / __|
+    | (_| (_) | | | | | | |_) | | |  __/ | || (_) | (_) | \__ \
+     \___\___/|_| |_| |_| .__/|_|_|\___|  \__\___/ \___/|_|___/
+                        |_|
+    ;
+
+    * compile utility macros;
+    filename cin "&gbl_utlout" lrecl=4096 recfm=v;
+    %inc cin / nosource;
+
     /*               _        _     _
      ___  __ _ ___  | |_ __ _| |__ | | ___
     / __|/ _` / __| | __/ _` | '_ \| |/ _ \
@@ -278,7 +271,8 @@ options sasautos=(sasautos,"&gbl_oto");   * autocall library;
     |___/\__,_|___/  \__\__,_|_.__/|_|\___|
     */
 
-    filename _bcot "d:/tmp/cst_025snfdescribe_sas7bdat.b64";
+    * download b64 encoded sas dataset - github does nto support binary download wirg aoi key ;
+    filename _bcot "&gbl_root:/cst/b64/cst_025snfdescribe_sas7bdat.b64";
     proc http
        method='get'
        url="&gbl_desinp"
@@ -286,10 +280,15 @@ options sasautos=(sasautos,"&gbl_oto");   * autocall library;
     run;quit;
 
     * Only run if descrition table changes;
-    %*utl_b64encode(d:/cst/cst_025snfdescribe.sas7bdat,d:/cst/b64/cst_025snfdescribe_sas7bdat.b64);
+    %*utl_b64encode(d:/cst/cst_025snfdescribe.sas7bdat,&gbl_root:/cst/b64/cst_025snfdescribe_sas7bdat.b64);
 
-    %utl_b64decode(d:/tmp/cst_025snfdescribe_sas7bdat.b64,&gbl_desout);
+    %utl_b64decode(&gbl_root:/cst/b64/cst_025snfdescribe_sas7bdat.b64,&gbl_desout);
 
+    /* check sas dataset
+       libname cst "c:/cst";
+       proc print data=cst.cst_025snfdescribe(obs=5);
+       run;quit;
+    */
 
 %end;
 
@@ -298,23 +297,8 @@ options sasautos=(sasautos,"&gbl_oto");   * autocall library;
  / _ \ '_ \ / _` | | | '_ \| | __|
 |  __/ | | | (_| | | | | | | | |_
  \___|_| |_|\__,_| |_|_| |_|_|\__|
-
 ;
 
-
-
-*                                             _ _        _              _
-  ___ ___  _ __ ___  _ __ (_) | ___  | |_ ___   ___ | |___
- / __/ _ \| '_ ` _ \| '_ \| | |/ _ \ | __/ _ \ / _ \| / __|
-| (_| (_) | | | | | | |_) | | |  __/ | || (_) | (_) | \__ \
- \___\___/|_| |_| |_| .__/|_|_|\___|  \__\___/ \___/|_|___/
-                    |_|
-;
-
-
-* compile utility macros;
-filename cin "&gbl_utlout" lrecl=4096 recfm=v;
-%inc cin / source;
 
 *                    _       _
  _ __ ___   ___   __| |_   _| | ___  ___
@@ -354,7 +338,7 @@ parmcards4;
 
      /* for checking without macro
         %let cst=snf;
-        %let root=d;
+        %let root=c;
         %let yr=2018-2019;
      */
 
@@ -383,7 +367,7 @@ parmcards4;
          %put &=rpt    ;
 
          * delete if exist;
-         %utlfkil(&zip  );
+         %*utlfkil(&zip  );
          %utlfkil(&alpha);
          %utlfkil(&nmrc );
          %utlfkil(&rpt  );
@@ -398,11 +382,24 @@ parmcards4;
        run;quit;
        filename download clear;
 
-       %let cmd="powershell expand-archive -path '&zip' -destinationpath 'd:\cst\csv\';";
+       %put &root:\cst\csv\;
+       %put &=zip;
+       %let cmd=%str(powershell expand-archive -path &zip -destinationpath &root:\cst\csv\;);
+       %put &=cmd;
+       options xwait xsync;run;quit;
+       systask kill _ps1;
+       systask command "&cmd" taskname=_ps1;
+       waitfor _ps1;
+
+
+       /*
+       %let cmd=%str(powershell expand-archive -path 'c:/cst/zip/snf10fy2019.zip' -Force -destinationpath 'c:\cst\csv\';);
        options xwait xsync;run;quit;
        systask kill _ps1;
        systask command &cmd taskname=_ps1;
        waitfor _ps1;
+       */
+
 
       data _null_;
 
@@ -437,17 +434,20 @@ parmcards4;
      %if &numjob=&csvs %then %let cst_100=1;
      %else %let cst_100=0;
 
+
 %mend cst_100;
 ;;;;
 run;quit;
 
 /*
+%put &gbl_root:/cst/oto/cst_100.sas;
+
+%inc "&gbl_root:/cst/oto/cst_100.sas" / source;
 %cst_100(
        cst=&gbl_typ
       ,root=&gbl_root
-      ,year=2011-2019
+      ,year=&gbl_yrs
        );
-
 %put &=cst_100;
 */
 
@@ -632,7 +632,6 @@ parmcards4;
 
  /*
    Middle Observation(3103 ) of Last dataset = HSP.HSP_WEB_RP14YER - Total Obs 6207
-
     -- CHARACTER --
    PRVDR_NUM            C    7       161363    Provider Number
    INITL_RPT_SW         C    1       N         Initial Report Switch
@@ -641,7 +640,6 @@ parmcards4;
    FI_NUM               C    5       05001     Fiscal Intermediary Number
    UTIL_CD              C    1       F         Utilization Code
    SPEC_IND             C    1                 Special Indicator
-
     -- NUMERIC --
    RPT_REC_NUM          N    5       566534    Report Record Number
    PRVDR_CTRL_TYPE_CD   N    3       9         Provider Control Type Code
@@ -663,13 +661,13 @@ run;quit;
 
 /*
 * report csvs;
+%inc "&gbl_root:/cst/oto/cst_150_1.sas" / source;
 %cst_150_1(
     cst=&gbl_typ
     ,root=&gbl_root
     ,yrs=&gbl_yrs
     ,out=cst_150&gbl_typ.rpt
     );
-
 %put &=cst_150_1;
 */
 
@@ -678,7 +676,6 @@ run;quit;
 | '_ \| '_ ` _ \| '__/ __|
 | | | | | | | | | | | (__
 |_| |_|_| |_| |_|_|  \___|
-
 ;
 
 * convert all numeric variable csvs into a single sas table;
@@ -775,13 +772,13 @@ parmcards4;
 run;quit;
 
 /*
+%inc "&gbl_root:/cst/oto/cst_150_2.sas" / source;
 %cst_150_2(
     cst=&gbl_typ
     ,root=&gbl_root
     ,yrs=&gbl_yrs
     ,out=cst_150&gbl_typ.num
     );
-
 %put &cst_150_2;
 */
 
@@ -880,17 +877,15 @@ parmcards4;
 ;;;;
 run;quit;
 
-options compress=char;
-
 /*
 * report csvs;
+%inc "&gbl_root:/cst/oto/cst_150_3.sas" / source;
 %cst_150_3(
     cst=&gbl_typ
     ,root=&gbl_root
     ,yrs=&gbl_yrs
     ,out=cst_150&gbl_typ.alp
     );
-
 %put &=cst_150_3;
 */
 
@@ -959,18 +954,13 @@ parmcards4;
     run;quit;
 
     /*
-
     NOTE: Compressing data set WORK._NRM decreased size by 31.73 percent.
           Compressed is 99996 pages; un-compressed would require 146468 pages.
     NOTE: DATA statement used (Total process time):
           real time           1:35.95
-
-
     Up to 40 obs from snf_web_nrm total obs=23,213,299
-
                 RPT_REC_
          Obs       NUM      CLMN_NUM    WKSHT_CD    LINE_NUM    ITM_TXT    TYP
-
            1     534105      00200      A000000      00100      1494791     N
            2     534105      00300      A000000      00100      1494791     N
            3     534105      00400      A000000      00100      1128275     N
@@ -1008,15 +998,13 @@ parmcards4;
 run;quit;
 
 /*
-
-%cst_150_4(
+%inc "&gbl_root:/cst/o%cst_150_4(
        num   = cst_150&gbl_typ.num
       ,alpha = cst_150&gbl_typ.alp
       ,rpt   = cst_150&gbl_typ.rpt
       ,out   = cst_150&gbl_typ.numalp
     );
-
-    %put cst_150_4=;
+    %put cst_150_4=;       to/cst_150_4.sas" / source;
 
 */
 
@@ -1132,7 +1120,7 @@ parmcards4;
 run;quit;
 
 /*
-options obs=max;
+%inc "&gbl_root:/cst/oto/cst_200.sas" / source;
 %cst_200(
      typ    = &gbl_typ
     ,yrs    = &gbl_yrs
@@ -1167,7 +1155,6 @@ parmcards4;
    ) / des="Create sas table and excel deliverables";
 
      /* Run without macro
-
         %let typ    = snf;
         %let yrs    = 2011-2019;
         %let inpsd1 = cst_200&typ.fiv;
@@ -1259,7 +1246,6 @@ parmcards4;
 
 
     /*  Possible parallelization
-
     NOTE: The data set CST.CST_250SNFFAC20112019 has 152634402 observations and 8 variables.
     NOTE: DATA statement used (Total process time):
           real time           1:17.75
@@ -1270,7 +1256,7 @@ parmcards4;
 run;quit;
 
 /*
-options obs=max;
+%inc "&gbl_root:/cst/oto/cst_200.sas" / source;
 %cst_250(
      typ    = &gbl_typ
     ,yrs    = &gbl_yrs
@@ -1282,7 +1268,6 @@ options obs=max;
 
    * 1 minute;
 */
-
 *         _       _____  ___   ___
   ___ ___| |_    |___ / / _ \ / _ \
  / __/ __| __|     |_ \| | | | | | |
@@ -1319,7 +1304,6 @@ parmcards4;
 
      /*
         * if run without calling macro;
-
         %let typ    = &gbl_typ;
         %let yrs    = &gbl_yrs;
         %let root   = &gbl_root;       ;
@@ -1327,7 +1311,6 @@ parmcards4;
         %let outxpo = cst_300&gbl_typ.xpo;
         %let outmax = cst_300&gbl_typ.max;
         %let outxls = cst_300&gbl_typ.puf;
-
         %put &=typ   ;
         %put &=yrs   ;
         %put &=inpsd1;
@@ -1409,14 +1392,10 @@ parmcards4;
    ;quit;
 
    /*
-
     * if a cell is missing n the final puf it does not exist in the 9 years of data;
-
     data chk;
       set cst.&outmaxfix(where=(cstnam=:'G000000_02000'));
     run;quit;
-
-
     28653!     quit;
     NOTE: PROCEDURE SQL used (Total process time):
           real time           36.37 seconds
@@ -1516,10 +1495,10 @@ parmcards4;
 run;quit;
 
 /*
-
-%symdel S2 S3 G0 G2 G3 s7 s4 c0 C0 O0 A0 A7 E0 xyrsn / nowarn;
-
+%*symdel S2 S3 G0 G2 G3 s7 s4 c0 C0 O0 A0 A7 E0 xyrsn / nowarn;
 options obs=max;
+
+%inc "&gbl_root:/cst/oto/cst_300.sas" / source;
 %cst_300(
      typ    = &gbl_typ
     ,yrs    = &gbl_yrs
@@ -1529,7 +1508,6 @@ options obs=max;
     ,outmax = cst_300&gbl_typ.max
     ,outxls = cst_300&gbl_typ.puf
    );
-
    %put &=cst_300;
 */
 
@@ -1538,8 +1516,3 @@ options obs=max;
  / _ \ '_ \ / _` |
 |  __/ | | | (_| |
  \___|_| |_|\__,_|
-
-;
-
-
-
