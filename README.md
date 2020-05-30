@@ -1,8 +1,24 @@
 # CostReports
 Builds a Cost Report Table Schema that for Detailed Analysis
-    Untested code. Every thing is under development;  
+
+    Although not finished, I have tested the code on three systems, Win 7, my Win 10 Laptop and Work Laptop.
     
-    Now in the process of converting the development system to production system
+    Installation (widows only-with xcmd option in SAS)
+    
+        Download cst_000makefile/sas
+                 cst_005driver.sas
+                 
+        Open the classic SAS editor (if you want to use my performance macros-not tested in EG or Server with EG
+        )
+        Run cst_000makefile.sas (compiles and automatically downloads all the input externals)
+        
+        Finally
+        Run the module driver, cst_005.driver.sas
+                 
+    
+    Development system is now in pseudo production
+    
+    Please let me know if you have any problems. rogerjdeangelis@gmail.com
     
     Development folder
     
