@@ -3,7 +3,22 @@ Builds a Cost Report Table Schema for Detailed Analysis of Cost Repoers
 
     Although not finished, I have tested the code on three systems, Win 7, my Win 10 Laptop and Work Laptop.
     
-    Excel Deliverables
+    EXCEL DELIVERABLES
+    
+    GOOGLE DRIVE
+    
+    Adding Google Drive links to deliverables (cannot keep track od Dropbox api changes)   
+                                                                                       
+    2019 in Google Drive 8mb                                                               
+    https://tinyurl.com/ybhmxt3e                                                           
+    https://drive.google.com/file/d/12a1E4iYwr6n8qL5we-ugNu4C5Cse7zKf/view?usp=sharing     
+                                                                                                                    
+    2011-2019 45mb                                                                         
+    https://tinyurl.com/ycj5sc5f                                                           
+    https://drive.google.com/file/d/1o6s5NSSwrGvM5hsOOlZr_G43cnEZCFSK/view?usp=sharing     
+    
+    
+    DROPBOX
     
     Sample DRAFT output Skilled Nursing Facility 2011 to 2019 in one excel sheet 1,220 columns
     File is too large for gihub so here is the dropbox link (whole process takes less than 30 mins?
@@ -291,11 +306,13 @@ Builds a Cost Report Table Schema for Detailed Analysis of Cost Repoers
     |_|___/___/\__,_|\___||___/                                                                                                      
     ;                                                                                                                                
                                                                                                                                      
-      1. If a cell has not been poulated in all cost reports post 2010 then                                                          
-         it will not appear in the output excel puf. It will be                                                                      
-         in the snowflake schema. All cells that have at least one poluated value                                                    
-         post 2010 will be in the excel puf. This can be fixed because the                                                           
-         col_describe table will habe meta data on the missing cell.                                                                 
+      1. If a cell has not been poulated in the cost reports you select then                                                          
+         it will not appear in the output excel puf. If you run all cost reports(currently 2011-2019), 
+         the excel file will contain all cells that had at least one occurance.
+         You may want to run all years, that way if a cell was not populated in a 
+         in a given year it will appear as missing.
+         This can be fixed because the                                                           
+         col_describe table has the meta data on the missing cell.                                                                 
                                                                                                                                      
       2. Requires R (may chage this if I can get sas url engine to work,                                                             
                                                                                                                                      
@@ -303,7 +320,7 @@ Builds a Cost Report Table Schema for Detailed Analysis of Cost Repoers
                                                                                                                                      
       4. I strongly suggest you put this string on a function key                                                                    
          ;;;;/*'*/ *);*};*];*/;/*"*/;%mend;run;quit;%end;end;run;endcomp;%utlfix;                                                    
-         and highlight and run anytime SAS gets stuck (i have submit on left mouse button)  
+         and highlight and run anytime SAS gets stuck (I have submit on left mouse button)  
          
       5. Code will not work with pre 2011 cost report. The cost report forms are different pre 2011.
      _           _ _     _                   _           _                                                                           
