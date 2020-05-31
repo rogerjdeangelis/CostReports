@@ -18,7 +18,7 @@ Builds a Cost Report Table Schema for Detailed Analysis of Cost Repoers
         I suggest you run the makefile with config option gbl_yrs=2011-2019, You can then
         select one year gbl_years=2019-2019 or any range of years for the driver.
      
-     If you run                                                                                     
+    If you run                                                                                     
     cst_000Makefile.sas with these global variables;                                               
                                                                                                    
     %let gbl_tok   =  cst                 ;   * toten and part of root;                            
