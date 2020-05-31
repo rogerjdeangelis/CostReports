@@ -3,6 +3,17 @@ Builds a Cost Report Table Schema for Detailed Analysis of Cost Repoers
 
     Although not finished, I have tested the code on three systems, Win 7, my Win 10 Laptop and Work Laptop.
     
+    Excel Deliverables
+    
+    Sample DRAFT output Skilled Nursing Facility 2011 to 2019 in one excel sheet 1,220 columns
+    File is too large for gihub so here is the dropbox link (whole process takes less than 30 mins?
+    
+    Just 2019 8mb
+    https://github.com/rogerjdeangelis/CostReports/blob/master/cst_300snfcst_300snfpuf20192019.xlsx
+    
+    2011-2019 (350mb)
+    https://www.dropbox.com/s/qzocabam8hp5i7p/cst_300snfcst_300snfpuf20112019.xlsb?dl=0
+  
     Installation (widows only-with xcmd option in SAS)
     
         Download cst_000makefile/sas
@@ -144,6 +155,10 @@ Builds a Cost Report Table Schema for Detailed Analysis of Cost Repoers
     Sample DRAFT output 2019 Skilled Nursing Facility 2011 to 2019 in one excel sheet 1,220 columns
     File is too large for gihub so here is the dropbox link (whole process takes less than 30 mins?
     
+    Just 2019
+    https://github.com/rogerjdeangelis/CostReports/blob/master/cst_300snfcst_300snfpuf20192019.xlsx
+    
+    2011-2019
     https://www.dropbox.com/s/qzocabam8hp5i7p/cst_300snfcst_300snfpuf20112019.xlsb?dl=0
 
                                                                                      
