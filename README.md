@@ -8,14 +8,16 @@ Builds a Cost Report Table Schema that for Detailed Analysis
         Download cst_000makefile/sas
                  cst_005driver.sas
                  
-        Open the classic SAS editor (if you want to use my performance macros-not tested in EG or Server with EG
-        )
+        Open the classic SAS editor (if you want to use my performance macros-not tested in EG or EG Server)
+       
         Run cst_000makefile.sas (compiles and automatically downloads all the input externals)
         
         Finally
         Run the module driver, cst_005.driver.sas
-                 
-    
+        
+        I suggest you run the makefile with config option gbl_yrs=2011-2019, You can then
+        select one year gbl_years=2019-2019 or any range of years for the driver.
+                   
     Development system is now in pseudo production
     
     Please let me know if you have any problems. rogerjdeangelis@gmail.com
@@ -175,7 +177,9 @@ Builds a Cost Report Table Schema that for Detailed Analysis
                                                                                                                                      
       4. I strongly suggest you put this string on a function key                                                                    
          ;;;;/*'*/ *);*};*];*/;/*"*/;%mend;run;quit;%end;end;run;endcomp;%utlfix;                                                    
-         and highlight and run anytime SAS gets stuck (i have submit on left mouse button)                                           
+         and highlight and run anytime SAS gets stuck (i have submit on left mouse button)  
+         
+      5. Code will not work with pre 2011 cost report. The cost report forms are different pre 2011.
      _           _ _     _                   _           _                                                                           
     | |__  _   _(_) | __| |  _ __  _ __ ___ (_) ___  ___| |_                                                                         
     | '_ \| | | | | |/ _` | | '_ \| '__/ _ \| |/ _ \/ __| __|                                                                        
