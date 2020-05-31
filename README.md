@@ -1,5 +1,5 @@
 # CostReports
-Builds a Cost Report Table Schema that for Detailed Analysis
+Builds a Cost Report Table Schema for Detailed Analysis of Cost Repoers
 
     Although not finished, I have tested the code on three systems, Win 7, my Win 10 Laptop and Work Laptop.
     
@@ -17,7 +17,118 @@ Builds a Cost Report Table Schema that for Detailed Analysis
         
         I suggest you run the makefile with config option gbl_yrs=2011-2019, You can then
         select one year gbl_years=2019-2019 or any range of years for the driver.
-                   
+     
+     If you run                                                                                     
+    cst_000Makefile.sas with these global variables;                                               
+                                                                                                   
+    %let gbl_tok   =  cst                 ;   * toten and part of root;                            
+    %let gbl_typ   =  snf                 ;   * skilled nursing facilities;                        
+    %let gbl_dir   =  1                   ;   * if 1 then build directory structure;               
+    %let gbl_dirsub=  1                   ;   * if 1 then build sub directories;                   
+    %let gbl_ext   =  1                   ;   * get externals;                                     
+    %let gbl_yrs   =  2019-2019           ;   * years to process;                                  
+    %let gbl_root  =  c                   ;   * where things are;                                  
+    %let gbl_oto   =  &gbl_root:/cst/oto  ;   * autocall library;                                  
+    %let gbl_sd1   =  &gbl_root:/cst      ;   * schema for cost report tables;                     
+                                                                                                   
+                                                                                                   
+    You should get this output                                                                     
+                                                                                                   
+                                                                                                   
+    c.\CST                                                                                         
+       |   cst_025snfdescribe.sas7bdat                                                             
+       |                                                                                           
+       +---b64                                                                                     
+       |       cst_025snfdescribe_sas7bdat.b64                                                     
+       |                                                                                           
+       +---csv                                                                                     
+       +---doc                                                                                     
+       +---fmt                                                                                     
+       +---log                                                                                     
+       +---lst                                                                                     
+       +---oto                                                                                     
+       |       cst_000makefile.sas                                                                 
+       |       cst_005driver.sas                                                                   
+       |       cst_010.sas                                                                         
+       |       cst_050.sas                                                                         
+       |                                                                                           
+       +---pdf                                                                                     
+       +---ppt                                                                                     
+       +---ps1                                                                                     
+       +---rda                                                                                     
+       +---rtf                                                                                     
+       +---sas                                                                                     
+       +---vba                                                                                     
+       +---vdo                                                                                     
+       +---xls                                                                                     
+    \---zip                                                                                        
+                                                                                                   
+                                                                                                   
+    Then if you run                                                                                
+                                                                                                   
+    cst_000drover.sas with these global variables;                                                 
+                                                                                                   
+    %let gbl_tok    =  cst                 ;   * project token;                                    
+    %let gbl_typ    =  snf                 ;   * skilled nursing facilities;                       
+    %let gbl_yrs    =  2019-2019           ;   * years to process;                                 
+    %let gbl_root   =  c                   ;   * where things are;                                 
+    %let gbl_oto    =  &gbl_root.:/cst/oto ;   * autocall library;                                 
+    %let gbl_sd1    =  &gbl_root.:/cst     ;   * schema for cost report tables;                    
+                                                                                                   
+    You should get this                                                                            
+                                                                                                   
+    C:\CST                                                                                         
+    |   cst_025snfdescribe.sas7bdat                                                                
+    |   cst_150snfalp20192019.sas7bdat                                                             
+    |   cst_150snfnum20192019.sas7bdat                                                             
+    |   cst_150snfnumalp20192019.sas7bdat                                                          
+    |   cst_150snfrpt20192019.sas7bdat                                                             
+    |   cst_200snffiv20192019.sas7bdat                                                             
+    |   cst_250snffac20192019.sas7bdat                                                             
+    |   cst_300snfmax20192019.sas7bdat                                                             
+    |   cst_300snfxpo20192019.sas7bdat                                                             
+    |                                                                                              
+    +---b64                                                                                        
+    |       cst_025snfdescribe_sas7bdat.b64                                                        
+    |                                                                                              
+    +---csv                                                                                        
+    |       snf10_2019_ALPHA.CSV                                                                   
+    |       snf10_2019_NMRC.CSV                                                                    
+    |       snf10_2019_RPT.CSV                                                                     
+    |                                                                                              
+    +---doc                                                                                        
+    +---fmt                                                                                        
+    +---log                                                                                        
+    +---lst                                                                                        
+    +---oto                                                                                        
+    |       cst_000makefile.sas                                                                    
+    |       cst_005driver.sas                                                                      
+    |       cst_010.sas                                                                            
+    |       cst_050.sas                                                                            
+    |       cst_100.sas                                                                            
+    |       cst_150_1.sas                                                                          
+    |       cst_150_2.sas                                                                          
+    |       cst_150_3.sas                                                                          
+    |       cst_150_4.sas                                                                          
+    |       cst_200.sas                                                                            
+    |       cst_250.sas                                                                            
+    |       cst_300.sas                                                                            
+    |                                                                                              
+    +---pdf                                                                                        
+    +---ppt                                                                                        
+    +---ps1                                                                                        
+    +---rda                                                                                        
+    +---rtf                                                                                        
+    +---sas                                                                                        
+    +---vba                                                                                        
+    +---vdo                                                                                        
+    +---xls                                                                                        
+    |       cst_300snfcst_300snfpuf20192019.xlsx  ** the deliverable;                              
+    |                                                                                              
+    \---zip                                                                                        
+                                                                                                   
+                                                                                                                                                                 
+
     Development system is now in pseudo production
     
     Please let me know if you have any problems. rogerjdeangelis@gmail.com
