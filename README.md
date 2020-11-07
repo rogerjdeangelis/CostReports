@@ -7,7 +7,7 @@ Builds a Cost Report Table Schema for Detailed Analysis of Cost Repoers
     
     GOOGLE DRIVE
     
-    Adding Google Drive links to deliverables (cannot keep track od Dropbox api changes)   
+    Adding Google Drive links to deliverables (cannot keep track of Dropbox api changes)   
                                                                                        
     2019 in Google Drive 8mb                                                               
     https://tinyurl.com/ybhmxt3e                                                           
