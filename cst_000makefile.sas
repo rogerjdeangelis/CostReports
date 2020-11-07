@@ -113,7 +113,7 @@
 %let gbl_dir      =  1                   ;   * if 1 then build directory structure else 0;
 %let gbl_dirsub   =  1                   ;   * if 1 then build sub directories else 0;
 
-%let gbl_makefile =  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_000.makefile.sas; /* makefile */
+%let gbl_makefile =  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_000makefile.sas; /* makefile */
 %let gbl_driver   =  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_005driver.sas; /* driver */
 %let gbl_tools    =  https://raw.githubusercontent.com/rogerjdeangelis/CostReports/master/cst_010.sas; /* tools */
 
