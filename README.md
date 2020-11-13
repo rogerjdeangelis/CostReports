@@ -39,7 +39,7 @@ Builds a Cost Report Table Schema for Detailed Analysis of Cost Repoers
         Run cst_000makefile.sas (compiles and automatically downloads all the input externals)
         
         Finally
-        Run the module driver, cst_005.driver.sas
+        Run the module driver, cst_005.driver.sas (instead of the driver you can run each module in makefile just highlight and submit)
         
         I suggest you run the makefile with config option gbl_yrs=2011-2019, You can then
         select one year gbl_years=2019-2019 or any range of years for the driver.
