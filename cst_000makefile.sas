@@ -159,8 +159,8 @@
 
   data _null_;
 
-      newdir=dcreate('cst',"&gbl_root:/");
-      newdir=dcreate('oto',"&gbl_root:/cst");   * autocall folder;
+      newdir=dcreate('cln',"%trim(&gbl_root)");                          
+      newdir=dcreate('oto',"%trim(&gbl_root)/cln");   * autocall folder; 
 
   run;quit;
 
